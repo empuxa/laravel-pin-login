@@ -12,7 +12,7 @@ return [
          * The column where the PIN is stored.
          * Default: 'login_pin'
          */
-        'pin'             => 'login_pin',
+        'pin' => 'login_pin',
 
         /**
          * The column where we store the information, how long the PIN is valid.
