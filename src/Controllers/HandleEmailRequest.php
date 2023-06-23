@@ -2,6 +2,7 @@
 
 namespace Empuxa\LoginViaPin\Controllers;
 
+use Empuxa\LoginViaPin\Events\LoginRequestViaPin;
 use Empuxa\LoginViaPin\Jobs\SendLoginPin;
 use Empuxa\LoginViaPin\Requests\LoginRequest;
 use Illuminate\Database\Eloquent\Model;
@@ -17,15 +18,23 @@ class HandleEmailRequest extends Controller
     {
         $request->authenticate();
 
-        SendLoginPin::dispatch(self::getUser($request->input('email')), $request->ip());
+        $user = self::getUser($request->input(config('login-via-pin.columns.identifier')));
 
-        session(['email' => $request->input('email')]);
+        SendLoginPin::dispatch($user, $request->ip());
+
+        session([
+            config('login-via-pin.columns.identifier') => $request->input(config('login-via-pin.columns.identifier')),
+        ]);
+
+        event(new LoginRequestViaPin($user, $request->ip()));
 
         return redirect(route('login.pin.show'));
     }
 
-    public static function getUser(string $email): Model
+    public static function getUser(string $identifier): Model
     {
-        return config('login-via-pin.model')::where('email', $email)->first();
+        return config('login-via-pin.model')::query()
+            ->where(config('login-via-pin.columns.identifier'), $identifier)
+            ->first();
     }
 }

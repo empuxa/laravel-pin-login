@@ -1,4 +1,4 @@
-# Login via PIN
+# Laravel Login via PIN
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/empuxa/login-via-pin.svg?style=flat-square)](https://packagist.org/packages/empuxa/login-via-pin)
 [![Tests](https://img.shields.io/github/actions/workflow/status/empuxa/login-via-pin/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/empuxa/login-via-pin/actions/workflows/run-tests.yml)
@@ -6,18 +6,21 @@
 
 Say goodbye to passwords and sign in via PIN instead.
 This package provides a simple way to add a PIN login to your Laravel application.
-However, it's not a replacement for existing magic link packages, since you still need to manually enter the PIN.
+
+*Why shouldn't I use a magic link solution?* you may ask yourself.
+Well, this package intends to be used in addition to the existing login methods.
+You can also support sign ins for users that either didn't set a password yet or don't have an email address (e.g. users that signed up with a phone number only).
 
 ## Requirements
 
-In addition to the usual Laravel requirements, this package relies on Alpine.js.
-If you're using Laravel LiveWire, you are already good to go.
-Otherwise ensure to include Alpine.js in your application.
-Also, you need to have a user model with an email address and a `remember_token` column.
+In addition to the usual Laravel requirements, this package relies on [Alpine.js](https://alpinejs.dev/).
+If you're using [Laravel LiveWire](https://laravel-livewire.com/), you are already good to go.
+Otherwise, ensure to include Alpine.js in your application.
+Also, you need to have a notifiable user model.
 
 ## Installation
 
-You can install the package via composer:
+Install the package via composer:
 
 ```bash
 composer require empuxa/login-via-pin
@@ -37,24 +40,23 @@ php artisan migrate
 
 ## Usage
 
-The sign in process is split into these steps:
-1. The user enters their email address and requests a PIN.
-    - fires an event: `Empuxa\LoginViaPin\Events\LoginPinRequested`
-2. If the email address is valid, a PIN is sent to the user.
+The sign in process has three steps:
+1. The user enters their email address, phone number, or any other defined identifier, and requests a PIN.
+2. If the information is valid, a PIN is sent to the user (you might need to adjust the notification channel within the user model).
 3. The user enters the PIN and might be logged in.
-   - fires an event: `Empuxa\LoginViaPin\Events\LoggedIn`
 
 ### Adjust the views
-Now that you've installed the package, you can add the login form to your application.
-Go to the copied views and adjust them to your needs. 
-They're located in `resources/views/vendor/login-via-pin` and kept as simple as possible.
+
+While the first steps were quite simple, now it's time to adjust the views.
+They are kept as simple as possible (some might also say "ugly"), and can be found in `resources/views/vendor/login-via-pin`.
+
+*Why aren't they beautiful?*
+Everybody uses different layouts and frameworks for their applications.
+You know your application best, so you can adjust the views to your needs.
 
 ### Change the notification
 Within the views you've copied, you'll find a notification that's sent to the user.
 You might want to adjust it to your needs.
-
-### Events
-
 
 ## Testing
 

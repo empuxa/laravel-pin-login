@@ -2,7 +2,8 @@
 
 namespace Empuxa\LoginViaPin\Controllers;
 
-use Empuxa\LoginViaPin\Exceptions\SessionInformationMissing;
+use Empuxa\LoginViaPin\Events\LoggedInViaPin;
+use Empuxa\LoginViaPin\Exceptions\MissingSessionInformation;
 use Empuxa\LoginViaPin\Jobs\ResetLoginPin;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
@@ -20,35 +21,37 @@ class HandlePinRequest extends Controller
 
     protected $user;
 
-    public static function getUserByEmail(): Model
+    public static function getUserByIdentifier(): Model
     {
         return config('login-via-pin.model')::query()
-            ->where('email', session('email'))
+            ->where(config('login-via-pin.columns.identifier'), session(config('login-via-pin.columns.identifier')))
             ->firstOrFail();
     }
 
     /**
-     * @todo use PIN request
+     * @todo use PIN request class
      *
      * @throws \Throwable
      */
     public function __invoke(Request $request): RedirectResponse
     {
-        throw_unless(session('email'), SessionInformationMissing::class);
+        throw_unless(session(config('login-via-pin.columns.identifier')), MissingSessionInformation::class);
 
-        $this->user = self::getUserByEmail();
+        $this->user = self::getUserByIdentifier();
 
-        $this->ensureIsNotRateLimited();
-        $this->ensurePinIsNotExpired($request->ip());
-        $this->validatePin($request->input('code'));
+
+        $this->ensureRequestIsNotRateLimited();
+        $this->ensurePinIsNotExpired();
+        $this->validatePin($request->input('pin'));
 
         $request->session()->regenerate();
 
         Auth::login($this->user, $request->input('remember') ?? false);
 
         RateLimiter::clear($this->throttleKey());
-
         ResetLoginPin::dispatch($this->user);
+
+        event(new LoggedInViaPin($this->user, $request->ip()));
 
         return redirect(config('login-via-pin.redirect'))->with([
             // @todo i18n
@@ -59,14 +62,14 @@ class HandlePinRequest extends Controller
     /**
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function ensureIsNotRateLimited(): void
+    public function ensureRequestIsNotRateLimited(): void
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), config('login-via-pin.pin.max_attempts') - 1)) {
             return;
         }
 
         throw ValidationException::withMessages([
-            // @todo i18n & test
+            // @todo i18n
             'pin' => __('controllers/session.store.error.rate_limit', [
                 'seconds' => RateLimiter::availableIn($this->throttleKey()),
             ]),
@@ -76,14 +79,14 @@ class HandlePinRequest extends Controller
     /**
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function ensurePinIsNotExpired(string $ip): void
+    public function ensurePinIsNotExpired(): void
     {
         if (now() < $this->user->{config('login-via-pin.columns.pin_valid_until')}) {
             return;
         }
 
         throw ValidationException::withMessages([
-            // @todo i18n & test
+            // @todo i18n
             'pin' => __('controllers/session.store.error.expired'),
         ]);
     }
@@ -91,9 +94,9 @@ class HandlePinRequest extends Controller
     /**
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validatePin(array $code): void
+    public function validatePin(array $pin): void
     {
-        collect($code)->each(function ($digit): void {
+        collect($pin)->each(function ($digit): void {
             $this->pin .= $digit;
         });
 
@@ -115,6 +118,6 @@ class HandlePinRequest extends Controller
 
     public function throttleKey(): string
     {
-        return Str::lower($this->user->email);
+        return Str::lower($this->user->{config('login-via-pin.columns.identifier')});
     }
 }

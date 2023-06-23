@@ -20,7 +20,7 @@ class HandleEmailRequestTest extends TestbenchTestCase
         $user = $this->createUser();
 
         $response = $this->post(route('login.email.handle'), [
-            'email' => $user->email,
+            config('login-via-pin.columns.identifier') => $user->email,
         ]);
 
         $response->assertSessionHasNoErrors();
@@ -35,7 +35,7 @@ class HandleEmailRequestTest extends TestbenchTestCase
         Bus::fake();
 
         $response = $this->post(route('login.email.handle'), [
-            'email' => 'not_existing@example.com',
+            config('login-via-pin.columns.identifier') => 'not_existing@example.com',
         ]);
 
         $response->assertSessionHasErrors('email', __('auth.failed'));
@@ -47,9 +47,9 @@ class HandleEmailRequestTest extends TestbenchTestCase
     {
         Event::fake();
 
-        for ($i = 0; $i < config('login-via-pin.email.max_attempts'); $i++) {
+        for ($i = 0; $i < config('login-via-pin.identifier.max_attempts'); $i++) {
             $this->post(route('login.email.handle'), [
-                'email' => 'non_existing@example.com',
+                config('login-via-pin.columns.identifier') => 'non_existing@example.com',
             ]);
         }
 

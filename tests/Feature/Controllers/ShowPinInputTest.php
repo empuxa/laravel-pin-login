@@ -19,7 +19,9 @@ class ShowPinInputTest extends TestbenchTestCase
     public function test_can_render_pin_screen(): void
     {
         $response = $this
-            ->withSession(['email' => 'admin@example.com'])
+            ->withSession([
+                config('login-via-pin.columns.identifier') => 'admin@example.com',
+            ])
             ->get(route('login.pin.show'));
 
         $response->assertStatus(200);

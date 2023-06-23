@@ -4,6 +4,6 @@ namespace Empuxa\LoginViaPin\Exceptions;
 
 use Exception;
 
-class SessionInformationMissing extends Exception
+class MissingSessionInformation extends Exception
 {
 }

@@ -9,6 +9,13 @@ return [
 
     'columns' => [
         /**
+         * The main identifier of the user model.
+         * We will use this column to authenticate the user and to send the PIN to.
+         * Default: 'email'
+         */
+        'identifier' => 'email',
+
+        /**
          * The column where the PIN is stored.
          * Default: 'login_pin'
          */
@@ -51,7 +58,7 @@ return [
         'validation' => 'required|digits:6',
     ],
 
-    'email' => [
+    'identifier' => [
         /**
          * The maximum number of attempts to get the user per minute.
          * Afterward, the user gets blocked for 60 seconds.
@@ -64,7 +71,8 @@ return [
          * The validation rules for the email.
          * Default: 'email|required'
          */
-        'validation' => 'email|required',
+        //'validation' => 'required|email|exists:users,email',
+        'validation' => 'required|email',
     ],
 
     /**
@@ -91,5 +99,5 @@ return [
      * The redirect path after a successful login.
      * Default: '/'
      */
-    'redirect' => '/',
+    'redirect' => '/welcome',
 ];

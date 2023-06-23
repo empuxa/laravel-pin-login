@@ -50,12 +50,12 @@
 
                 {{-- PIN inputs --}}
                 <div class="flex justify-center" x-data="pin()">
-                    <template x-for="(l,i) in pin_length" :key="`code_field_${i}`">
+                    <template x-for="(l,i) in pin_length" :key="`pin_field_${i}`">
                         <input :autofocus="i === 0"
-                               :id="`code_field_${i}`"
+                               :id="`pin_field_${i}`"
                                class="h-16 lg:h-20 w-12 lg:w-16 border border-gray-300 dark:border-gray-600 mx-1 rounded-md flex items-center text-center text-3xl lg:text-4xl text-gray-900 bg-transparent dark:text-gray-200 uppercase focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                value=""
-                               name="code[]"
+                               name="pin[]"
                                maxlength="1"
                                inputmode="numeric"
                                @keyup="stepForward(i)"
@@ -102,11 +102,11 @@
         </form>
 
         <div class="text-sm flex mt-10 justify-center">
-            <form method="POST" action="{{ route('login.pin.handle') }}">
+            <form method="POST" action="{{ route('login.email.handle') }}">
                 @csrf
                 <input type="submit" value="Resend the PIN"
                        class="bg-transparent cursor-pointer text-light dark:text-gray-200 hover:underline">
-                <input type="hidden" name="email" value="{{ $email }}">
+                <input type="hidden" name="{{ config('login-via-pin.columns.identifier') }}" value="{{ ${ config('login-via-pin.columns.identifier') } }}">
             </form>
         </div>
 
@@ -124,7 +124,7 @@
                     }
 
                     for (let i = 0; i < paste.length; i++) {
-                        document.getElementById(`code_field_${i}`).value = paste[i];
+                        document.getElementById(`pin_field_${i}`).value = paste[i];
                     }
 
                     document.getElementById(`submit`).focus();
@@ -136,26 +136,26 @@
                 return {
                     resetValue(i) {
                         for (let x = 0; x < pin_length; x++) {
-                            if (x >= i) document.getElementById(`code_field_${x}`).value = '';
+                            if (x >= i) document.getElementById(`pin_field_${x}`).value = '';
                         }
                     },
 
                     stepForward(i) {
                         // Last input has been filled; there is no next input
-                        if (document.getElementById(`code_field_${i}`).value && i === pin_length - 1) {
+                        if (document.getElementById(`pin_field_${i}`).value && i === pin_length - 1) {
                             document.getElementById(`submit`).focus();
                             return;
                         }
 
                         // Return if the next input is already filled (conflict with paste)
-                        if (document.getElementById(`code_field_${i + 1}`).value) {
+                        if (document.getElementById(`pin_field_${i + 1}`).value) {
                             return;
                         }
 
                         // Next input is empty
-                        if (document.getElementById(`code_field_${i}`).value && i !== pin_length - 1) {
-                            document.getElementById(`code_field_${i + 1}`).focus();
-                            document.getElementById(`code_field_${i + 1}`).value = '';
+                        if (document.getElementById(`pin_field_${i}`).value && i !== pin_length - 1) {
+                            document.getElementById(`pin_field_${i + 1}`).focus();
+                            document.getElementById(`pin_field_${i + 1}`).value = '';
                         }
                     },
 
@@ -164,8 +164,8 @@
                             return;
                         }
 
-                        document.getElementById(`code_field_${i - 1}`).focus();
-                        document.getElementById(`code_field_${i - 1}`).value = '';
+                        document.getElementById(`pin_field_${i - 1}`).focus();
+                        document.getElementById(`pin_field_${i - 1}`).value = '';
                     }
                 }
             }

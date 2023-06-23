@@ -21,7 +21,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => config('login-via-pin.email.validation'),
+            config('login-via-pin.columns.identifier') => config('login-via-pin.identifier.validation'),
         ];
     }
 
@@ -32,6 +32,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        // This check might not be required depending on your validation rules
         $this->checkIfUserExists();
 
         RateLimiter::clear($this->throttleKey());
@@ -42,7 +43,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), config('login-via-pin.email.max_attempts') - 1)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), config('login-via-pin.identifier.max_attempts') - 1)) {
             return;
         }
 
@@ -51,7 +52,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            config('login-via-pin.columns.identifier') => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -61,7 +62,10 @@ class LoginRequest extends FormRequest
     public function isUserExistent(): bool
     {
         return config('login-via-pin.model')::query()
-            ->where('email', $this->input('email'))
+            ->where(
+                config('login-via-pin.columns.identifier'),
+                $this->input(config('login-via-pin.columns.identifier')),
+            )
             ->exists();
     }
 
@@ -74,7 +78,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                config('login-via-pin.columns.identifier') => __('auth.failed'),
             ]);
         }
 
@@ -83,6 +87,6 @@ class LoginRequest extends FormRequest
 
     public function throttleKey(): string
     {
-        return Str::lower($this->input('email')).'|'.$this->ip();
+        return Str::lower($this->input(config('login-via-pin.columns.identifier'))).'|'.$this->ip();
     }
 }

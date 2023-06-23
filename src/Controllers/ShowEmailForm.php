@@ -9,6 +9,6 @@ class ShowEmailForm extends Controller
 {
     public function __invoke(): View
     {
-        return view('login-via-pin::email');
+        return view('login-via-pin::identifier');
     }
 }

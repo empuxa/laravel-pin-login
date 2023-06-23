@@ -15,9 +15,11 @@ class HandlePinRequestTest extends TestbenchTestCase
         $user = $this->createUser();
 
         $response = $this
-            ->withSession(['email' => $user->email])
+            ->withSession([
+                config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')}
+            ])
             ->post(route('login.pin.handle'), [
-                'code' => [9, 9, 9, 9, 9, 9],
+                'pin' => [9, 9, 9, 9, 9, 9],
             ]);
 
         $response->assertSessionHasErrors('pin', __('controllers/session.store.error.pin_wrong', [
@@ -30,9 +32,11 @@ class HandlePinRequestTest extends TestbenchTestCase
         $user = $this->createUser();
 
         $response = $this
-            ->withSession(['email' => $user->email])
+            ->withSession([
+                config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')}
+            ])
             ->post(route('login.pin.handle'), [
-                'code' => [1, 2, 3, 4, 5, 6],
+                'pin' => [1, 2, 3, 4, 5, 6],
             ]);
 
         $response->assertSessionHasErrors('pin', __('controllers/session.store.error.expired'));
@@ -44,22 +48,27 @@ class HandlePinRequestTest extends TestbenchTestCase
             config('login-via-pin.columns.pin_valid_until') => now()->addMinutes(10),
         ]);
 
+        $session = [
+            config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')}
+        ];
+
         for ($i = 0; $i < config('login-via-pin.pin.max_attempts'); $i++) {
             $this
-                ->withSession(['email' => $user->email])
+                ->withSession($session)
                 ->post(route('login.pin.handle'), [
-                    'code' => [9, 9, 9, 9, 9, 9],
+                    'pin' => [9, 9, 9, 9, 9, 9],
                 ]);
         }
 
+
         $response = $this
-            ->withSession(['email' => $user->email])
+            ->withSession($session)
             ->post(route('login.pin.handle'), [
-                'code' => [1, 2, 3, 4, 5, 6],
+                'pin' => [1, 2, 3, 4, 5, 6],
             ]);
 
         $response->assertSessionHasErrors('pin', __('controllers/session.store.error.rate_limit', [
-            'seconds' => RateLimiter::availableIn($user->email),
+            'seconds' => RateLimiter::availableIn($user->{config('login-via-pin.columns.identifier')}),
         ]));
     }
 
@@ -70,9 +79,11 @@ class HandlePinRequestTest extends TestbenchTestCase
         ]);
 
         $response = $this
-            ->withSession(['email' => $user->email])
+            ->withSession([
+                config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')},
+            ])
             ->post(route('login.pin.handle'), [
-                'code' => [1, 2, 3, 4, 5, 6],
+                'pin' => [1, 2, 3, 4, 5, 6],
             ]);
 
         $response->assertSessionHasNoErrors();
