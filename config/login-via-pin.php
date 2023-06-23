@@ -3,7 +3,7 @@
 return [
     /**
      * The model to use for the login.
-     * Default: App\Models\User::class
+     * Default: \App\Models\User::class
      */
     'model' => \App\Models\User::class,
 
@@ -71,7 +71,6 @@ return [
          * The validation rules for the email.
          * Default: 'email|required'
          */
-        //'validation' => 'required|email|exists:users,email',
         'validation' => 'required|email',
     ],
 
@@ -99,5 +98,5 @@ return [
      * The redirect path after a successful login.
      * Default: '/'
      */
-    'redirect' => '/welcome',
+    'redirect' => '/',
 ];

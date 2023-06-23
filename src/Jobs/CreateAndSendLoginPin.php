@@ -6,7 +6,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Hash;
 
-class SendLoginPin
+class CreateAndSendLoginPin
 {
     use Dispatchable;
     use SerializesModels;

@@ -2,14 +2,14 @@
 
 namespace Empuxa\LoginViaPin\Tests\Feature\Controllers;
 
-use Empuxa\LoginViaPin\Jobs\SendLoginPin;
+use Empuxa\LoginViaPin\Jobs\CreateAndSendLoginPin;
 use Empuxa\LoginViaPin\Tests\TestbenchTestCase;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 
-class HandleEmailRequestTest extends TestbenchTestCase
+class HandleIdentifierRequestTest extends TestbenchTestCase
 {
     use RefreshDatabase;
 
@@ -19,15 +19,15 @@ class HandleEmailRequestTest extends TestbenchTestCase
 
         $user = $this->createUser();
 
-        $response = $this->post(route('login.email.handle'), [
+        $response = $this->post(route('login-via-pin.identifier.handle'), [
             config('login-via-pin.columns.identifier') => $user->email,
         ]);
 
         $response->assertSessionHasNoErrors();
 
-        Bus::assertDispatched(SendLoginPin::class);
+        Bus::assertDispatched(CreateAndSendLoginPin::class);
 
-        $response->assertRedirect(route('login.pin.show'));
+        $response->assertRedirect(route('login-via-pin.pin.show'));
 
         $this->assertGuest();
     }
@@ -36,13 +36,13 @@ class HandleEmailRequestTest extends TestbenchTestCase
     {
         Bus::fake();
 
-        $response = $this->post(route('login.email.handle'), [
+        $response = $this->post(route('login-via-pin.identifier.handle'), [
             config('login-via-pin.columns.identifier') => 'not_existing@example.com',
         ]);
 
         $response->assertSessionHasErrors('email', __('auth.failed'));
 
-        Bus::assertNotDispatched(SendLoginPin::class);
+        Bus::assertNotDispatched(CreateAndSendLoginPin::class);
 
         $this->assertGuest();
     }
@@ -52,7 +52,7 @@ class HandleEmailRequestTest extends TestbenchTestCase
         Event::fake();
 
         for ($i = 0; $i < config('login-via-pin.identifier.max_attempts'); $i++) {
-            $this->post(route('login.email.handle'), [
+            $this->post(route('login-via-pin.identifier.handle'), [
                 config('login-via-pin.columns.identifier') => 'non_existing@example.com',
             ]);
         }

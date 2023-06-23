@@ -15,7 +15,7 @@
             Enter your login
         </h1>
 
-        <form action="{{ route('login.email.handle') }}" method="POST">
+        <form action="{{ route('login-via-pin.identifier.handle') }}" method="POST">
             @csrf
 
             <div class="space-y-6">

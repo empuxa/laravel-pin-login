@@ -2,7 +2,7 @@
 
 namespace Empuxa\LoginViaPin\Tests\Feature\Jobs;
 
-use Empuxa\LoginViaPin\Jobs\SendLoginPin;
+use Empuxa\LoginViaPin\Jobs\CreateAndSendLoginPin;
 use Empuxa\LoginViaPin\Tests\TestbenchTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
@@ -24,7 +24,7 @@ class SendLoginPinTest extends TestbenchTestCase
         $userLoginPin = $user->{config('login-via-pin.columns.pin')};
         $userUpdatedAt = $user->updated_at;
 
-        SendLoginPin::dispatchSync($user);
+        CreateAndSendLoginPin::dispatchSync($user);
 
         $user->fresh();
 
