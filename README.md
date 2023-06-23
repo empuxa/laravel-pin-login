@@ -4,12 +4,16 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/empuxa/login-via-pin/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/empuxa/login-via-pin/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/empuxa/login-via-pin.svg?style=flat-square)](https://packagist.org/packages/empuxa/login-via-pin)
 
+![Banner](https://banners.beyondco.de/Login%20via%20PIN.png?theme=light&packageManager=composer+require&packageName=empuxa%2Flogin-via-pin&pattern=architect&style=style_1&description=Goodbye+passwords%21&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
+
 Say goodbye to passwords and sign in via PIN instead.
 This package provides a simple way to add a PIN login to your Laravel application.
 
 *Why shouldn't I use a magic link solution?* you may ask yourself.
 Well, this package intends to be used in addition to the existing login methods.
 You can also support sign ins for users that either didn't set a password yet or don't have an email address (e.g. users that signed up with a phone number only).
+
+![How it works](docs/animation.gif)
 
 ## Requirements
 
