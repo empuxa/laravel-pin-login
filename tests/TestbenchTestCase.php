@@ -41,8 +41,8 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
         return config('login-via-pin.model')::create(array_merge(
             // Default Laravel params
             [
-                'name' => fake()->name(),
-                'email' => fake()->unique()->safeEmail(),
+                'name' => 'Test User',
+                'email' => 'user@example.com',
                 'email_verified_at' => now(),
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Str::random(10),
