@@ -16,7 +16,7 @@ class HandlePinRequestTest extends TestbenchTestCase
 
         $response = $this
             ->withSession([
-                config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')}
+                config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')},
             ])
             ->post(route('login.pin.handle'), [
                 'pin' => [9, 9, 9, 9, 9, 9],
@@ -33,7 +33,7 @@ class HandlePinRequestTest extends TestbenchTestCase
 
         $response = $this
             ->withSession([
-                config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')}
+                config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')},
             ])
             ->post(route('login.pin.handle'), [
                 'pin' => [1, 2, 3, 4, 5, 6],
@@ -49,7 +49,7 @@ class HandlePinRequestTest extends TestbenchTestCase
         ]);
 
         $session = [
-            config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')}
+            config('login-via-pin.columns.identifier') => $user->{config('login-via-pin.columns.identifier')},
         ];
 
         for ($i = 0; $i < config('login-via-pin.pin.max_attempts'); $i++) {
@@ -59,7 +59,6 @@ class HandlePinRequestTest extends TestbenchTestCase
                     'pin' => [9, 9, 9, 9, 9, 9],
                 ]);
         }
-
 
         $response = $this
             ->withSession($session)
