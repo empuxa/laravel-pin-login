@@ -39,7 +39,6 @@ class HandlePinRequest extends Controller
 
         $this->user = self::getUserByIdentifier();
 
-
         $this->ensureRequestIsNotRateLimited();
         $this->ensurePinIsNotExpired();
         $this->validatePin($request->input('pin'));
