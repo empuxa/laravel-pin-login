@@ -92,12 +92,13 @@ class HandlePinRequest extends Controller
     }
 
     /**
+     * @param array<int, int|string> $pin
      * @throws \Illuminate\Validation\ValidationException
      */
     public function validatePin(array $pin): void
     {
         collect($pin)->each(function ($digit): void {
-            $this->pin .= $digit;
+            $this->pin .= (int) $digit;
         });
 
         if (Hash::check($this->pin, $this->user->{config('login-via-pin.columns.pin')})) {

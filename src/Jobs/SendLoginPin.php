@@ -37,7 +37,7 @@ class SendLoginPin
     public static function createPin(): string
     {
         return str_pad(
-            (string) random_int(0, str_repeat(9, config('login-via-pin.pin.length'))),
+            (string) random_int(0, (int) str_repeat('9', config('login-via-pin.pin.length'))),
             config('login-via-pin.pin.length'),
             '0',
             STR_PAD_LEFT,

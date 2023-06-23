@@ -18,12 +18,14 @@ class HandleEmailRequest extends Controller
     {
         $request->authenticate();
 
-        $user = self::getUser($request->input(config('login-via-pin.columns.identifier')));
+        $inputOfIdentifier = $request->input(config('login-via-pin.columns.identifier'));
+
+        $user = self::getUser($inputOfIdentifier);
 
         SendLoginPin::dispatch($user, $request->ip());
 
         session([
-            config('login-via-pin.columns.identifier') => $request->input(config('login-via-pin.columns.identifier')),
+            config('login-via-pin.columns.identifier') => $inputOfIdentifier,
         ]);
 
         event(new LoginRequestViaPin($user, $request->ip()));

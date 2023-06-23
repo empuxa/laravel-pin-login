@@ -12,11 +12,11 @@ class LoginRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return is_null($this->user);
+        return auth()->guest();
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<int|string, mixed>
      */
     public function rules(): array
     {

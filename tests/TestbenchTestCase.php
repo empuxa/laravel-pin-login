@@ -33,6 +33,9 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
         $app['config']->set('login-via-pin.model', User::class);
     }
 
+    /**
+     * @param  array<int|string,mixed>  $params
+     */
     protected function createUser(array $params = [])
     {
         return config('login-via-pin.model')::create(array_merge(
