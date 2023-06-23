@@ -4,7 +4,6 @@ namespace Empuxa\LoginViaPin\Tests;
 
 use Empuxa\LoginViaPin\Models\User;
 use Empuxa\LoginViaPin\ServiceProvider;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class TestbenchTestCase extends \Orchestra\Testbench\TestCase
@@ -37,7 +36,7 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
     protected function createUser(array $params = [])
     {
         return config('login-via-pin.model')::create(array_merge(
-        // Default Laravel params
+            // Default Laravel params
             [
                 'name'              => fake()->name(),
                 'email'             => fake()->unique()->safeEmail(),
@@ -50,7 +49,7 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
                 config('login-via-pin.columns.pin')             => '$2y$10$DJDW1ZCcd.6iqtq/JdivDuWTUCDxVES/efzv1e61CKLhdIJPupzI6', // 123456,
                 config('login-via-pin.columns.pin_valid_until') => null,
             ],
-// Additional test params
+            // Additional test params
             $params,
         ));
     }

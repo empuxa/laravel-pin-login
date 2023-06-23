@@ -13,7 +13,7 @@ class ServiceProvider extends PackageServiceProvider
             ->name('login-via-pin')
             ->hasConfigFile()
             ->hasViews()
-            //->hasTranslations()
+            // ->hasTranslations()
             ->hasRoute('web');
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
