@@ -87,6 +87,6 @@ class LoginRequest extends FormRequest
 
     public function throttleKey(): string
     {
-        return Str::lower($this->input(config('login-via-pin.columns.identifier'))).'|'.$this->ip();
+        return Str::lower($this->input(config('login-via-pin.columns.identifier'))) . '|' . $this->ip();
     }
 }
