@@ -28,10 +28,10 @@ class LoginPin extends Notification
     public function toMail(mixed $notifiable): MailMessage
     {
         $params = [
-            'name'        => $notifiable->name,
+            'name' => $notifiable->name,
             'valid_until' => $notifiable->{config('login-via-pin.columns.pin_valid_until')},
-            'pin'         => $this->pin,
-            'ip'          => $this->ip,
+            'pin' => $this->pin,
+            'ip' => $this->ip,
         ];
 
         // This notification uses a custom markdown template.
@@ -48,7 +48,7 @@ class LoginPin extends Notification
             )
             ->markdown('login-via-pin::notification', [
                 'notifiable' => $notifiable,
-                'pin'        => str_split($this->pin),
+                'pin' => str_split($this->pin),
             ]);
     }
 }

@@ -30,6 +30,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'password' => 'hashed',
-        'pin'      => 'hashed',
+        'pin' => 'hashed',
     ];
 }

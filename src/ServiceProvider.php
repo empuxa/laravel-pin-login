@@ -16,6 +16,6 @@ class ServiceProvider extends PackageServiceProvider
             //->hasTranslations()
             ->hasRoute('web');
 
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }

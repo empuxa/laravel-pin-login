@@ -4,7 +4,6 @@ namespace Empuxa\LoginViaPin\Tests\Feature\Controllers;
 
 use Empuxa\LoginViaPin\Tests\TestbenchTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 
 class HandlePinRequestTest extends TestbenchTestCase
