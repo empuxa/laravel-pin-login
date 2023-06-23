@@ -1,17 +1,21 @@
-# Laravel Login via PIN
+# Laravel PIN Login
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/empuxa/login-via-pin.svg?style=flat-square)](https://packagist.org/packages/empuxa/login-via-pin)
 [![Tests](https://img.shields.io/github/actions/workflow/status/empuxa/login-via-pin/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/empuxa/login-via-pin/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/empuxa/login-via-pin.svg?style=flat-square)](https://packagist.org/packages/empuxa/login-via-pin)
 
-![Banner](https://banners.beyondco.de/Login%20via%20PIN.png?theme=light&packageManager=composer+require&packageName=empuxa%2Flogin-via-pin&pattern=architect&style=style_1&description=Goodbye+passwords%21&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
+![Banner](https://banners.beyondco.de/Laravel%20PIN%20Login.png?theme=light&packageManager=composer+require&packageName=empuxa%2Flogin-via-pin&pattern=architect&style=style_1&description=Goodbye+passwords%21&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
 
-Say goodbye to passwords and sign in via PIN instead.
-This package provides a simple way to add a PIN login to your Laravel application.
+Say goodbye to passwords and sign in via PIN instead! 
+Laravel PIN Login is a convenient package that allows you to easily add a PIN login feature to your Laravel application.
 
-*Why shouldn't I use a magic link solution?* you may ask yourself.
-Well, this package intends to be used in addition to the existing login methods.
-You can also support sign ins for users that either didn't set a password yet or don't have an email address (e.g. users that signed up with a phone number only).
+## Why Choose Laravel PIN Login?
+You might wonder why you should opt for a PIN login instead of a magic link solution. Well, this package is designed to complement the existing login methods in your application. It provides an alternative sign-in option for users who haven't set a password yet or don't have an email address. For instance, users who signed up with only a phone number can still enjoy the benefits of secure login through a PIN.
+
+## Features
+- Simplified sign-in process using a PIN
+- Compatibility with existing login methods
+- Support for users without passwords or email addresses
 
 ![How it works](docs/animation.gif)
 
@@ -30,37 +34,44 @@ Install the package via composer:
 composer require empuxa/login-via-pin
 ```
 
-Afterward, copy the vendor files and adjust the config file `config/login-via-pin.php` to your needs:
+Copy the vendor files and adjust the config file `config/login-via-pin.php` to your needs:
 
 ```bash
 php artisan vendor:publish --provider="Empuxa\LoginViaPin\ServiceProvider"
 ```
 
-Finally, run the migrations:
+Run the migrations:
 
 ```bash
 php artisan migrate
 ```
 
+That's it!
+You're ready to start using the PIN login feature in your Laravel application.
+
 ## Usage
 
-The sign in process has three steps:
-1. The user enters their email address, phone number, or any other defined identifier, and requests a PIN.
-2. If the information is valid, a PIN is sent to the user (you might need to adjust the notification channel within the user model).
-3. The user enters the PIN and might be logged in.
+The sign-in process for this repository involves three steps:
+1. Enter the user's email address, phone number, or any other specified identifier, and request a PIN.
+2. If the entered information is valid, a PIN will be sent to the user. You may need to customize the notification channel based on the user model you are using.
+3. Enter the received PIN to potentially log in the user.
 
-### Adjust the views
+### Customizing the Views
 
-While the first steps were quite simple, now it's time to adjust the views.
-They are kept as simple as possible (some might also say "ugly"), and can be found in `resources/views/vendor/login-via-pin`.
+While the initial steps are relatively straightforward, it's now necessary to customize the views. 
+These views have been designed to be as simple as possible (some might even consider them "ugly") and can be located in the `resources/views/vendor/login-via-pin` directory.
 
-*Why aren't they beautiful?*
-Everybody uses different layouts and frameworks for their applications.
-You know your application best, so you can adjust the views to your needs.
+*Why are they not visually appealing?*
+Different applications adopt various layouts and frameworks. 
+Since you have the most knowledge about your application, you can change the views to suit your specific requirements.
 
-### Change the notification
-Within the views you've copied, you'll find a notification that's sent to the user.
-You might want to adjust it to your needs.
+### Modifying the Notification
+Within the copied views, you will come across a notification that's sent to the user. 
+You may want to make adjustments to this notification to align it with your preferences and needs.
+
+#### Different Notification Channels
+If you plan on utilizing SMS or similar as your preferred notification channel, you have the option to create a custom notification class.
+The PIN and the user's IP address will be passed to the constructor of this class. Finally, replace the default notification class within the `config/login-via-pin.php` file with your custom notification.
 
 ## Testing
 
