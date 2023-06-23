@@ -24,12 +24,4 @@ class User extends Authenticatable
         'remember_token',
         'pin',
     ];
-
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'password' => 'hashed',
-        'pin' => 'hashed',
-    ];
 }
