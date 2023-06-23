@@ -1,46 +1,61 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "empuxa/login-via-pin",
+    "description": "Say goodbye to passwords and sign in via PIN instead.",
     "keywords": [
-        ":vendor_name",
-        ":package_slug"
+        "empuxa",
+        "login-via-pin"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/empuxa/login-via-pin",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Marco Raddatz",
+            "email": "marco@empuxa.com",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.1"
+        "php": "^8.1",
+        "illuminate/contracts": "^9.0|^10.0",
+        "illuminate/events": "^9.0|^10.0",
+        "illuminate/notifications": "^9.0|^10.0",
+        "illuminate/routing": "^9.0|^10.0",
+        "illuminate/support": "^9.0|^10.0",
+        "illuminate/view": "^9.0|^10.0",
+        "spatie/laravel-package-tools": "^1.0"
     },
     "require-dev": {
-        :require_dev_testing,
-        :require_dev_codestyle,
+        "phpunit/phpunit": "^9.5",
+        "laravel/pint": "^1.2",
+        "orchestra/testbench": "^7.0|^8.0",
         "spatie/ray": "^1.28"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src"
+            "Empuxa\\LoginViaPin\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Empuxa\\LoginViaPin\\Tests\\": "tests"
         }
     },
     "scripts": {
-        :scripts_testing,
-        :scripts_codestyle
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage",
+        "format": "vendor/bin/pint"
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            :plugins_testing,
             "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Empuxa\\LoginViaPin\\ServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",
