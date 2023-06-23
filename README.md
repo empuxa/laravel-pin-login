@@ -21,7 +21,7 @@ You might wonder why you should opt for a PIN login instead of a magic link solu
 
 ## Requirements
 
-In addition to the usual Laravel requirements, this package relies on [Alpine.js](https://alpinejs.dev/).
+In addition to Laravel v9.33 or newer, this package relies on [Alpine.js](https://alpinejs.dev/).
 If you're using [Laravel LiveWire](https://laravel-livewire.com/), you are already good to go.
 Otherwise, ensure to include Alpine.js in your application.
 Also, you need to have a notifiable user model.
@@ -54,7 +54,7 @@ You're ready to start using the PIN login feature in your Laravel application.
 The sign-in process for this repository involves three steps:
 1. Enter the user's email address, phone number, or any other specified identifier, and request a PIN.
 2. If the entered information is valid, a PIN will be sent to the user. You may need to customize the notification channel based on the user model you are using.
-3. Enter the received PIN to potentially log in the user.
+3. Enter the received PIN to log in the user.
 
 ### Customizing the Views
 
