@@ -28,6 +28,8 @@ class HandleEmailRequestTest extends TestbenchTestCase
         Bus::assertDispatched(SendLoginPin::class);
 
         $response->assertRedirect(route('login.pin.show'));
+
+        $this->assertGuest();
     }
 
     public function test_does_not_send_email_to_user_with_wrong_email(): void
@@ -41,6 +43,8 @@ class HandleEmailRequestTest extends TestbenchTestCase
         $response->assertSessionHasErrors('email', __('auth.failed'));
 
         Bus::assertNotDispatched(SendLoginPin::class);
+
+        $this->assertGuest();
     }
 
     public function test_does_not_send_email_to_user_with_rate_limit(): void
@@ -54,5 +58,7 @@ class HandleEmailRequestTest extends TestbenchTestCase
         }
 
         Event::assertDispatched(Lockout::class);
+
+        $this->assertGuest();
     }
 }

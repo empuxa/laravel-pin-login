@@ -25,6 +25,8 @@ class HandlePinRequestTest extends TestbenchTestCase
         $response->assertSessionHasErrors('pin', __('controllers/session.store.error.pin_wrong', [
             'attempts_left' => config('login-via-pin.pin.max_attempts') - 1,
         ]));
+
+        $this->assertGuest();
     }
 
     public function test_cannot_login_with_expired_session(): void
@@ -40,6 +42,8 @@ class HandlePinRequestTest extends TestbenchTestCase
             ]);
 
         $response->assertSessionHasErrors('pin', __('controllers/session.store.error.expired'));
+
+        $this->assertGuest();
     }
 
     public function test_cannot_login_with_rate_limit(): void
@@ -70,6 +74,8 @@ class HandlePinRequestTest extends TestbenchTestCase
         $response->assertSessionHasErrors('pin', __('controllers/session.store.error.rate_limit', [
             'seconds' => RateLimiter::availableIn($user->{config('login-via-pin.columns.identifier')}),
         ]));
+
+        $this->assertGuest();
     }
 
     public function test_can_login_with_correct_pin(): void
@@ -89,5 +95,7 @@ class HandlePinRequestTest extends TestbenchTestCase
         $response->assertSessionHasNoErrors();
 
         $response->assertRedirect(config('login-via-pin.redirect'));
+
+        $this->assertAuthenticatedAs($user);
     }
 }
