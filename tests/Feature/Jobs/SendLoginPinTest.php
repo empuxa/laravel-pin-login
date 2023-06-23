@@ -31,7 +31,7 @@ class SendLoginPinTest extends TestbenchTestCase
         $this->assertTrue($user->{config('login-via-pin.columns.pin_valid_until')}->isFuture());
 
         // @todo fix this assignment
-        //$this->assertEquals($userUpdatedAt, $user->updated_at);
+        // $this->assertEquals($userUpdatedAt, $user->updated_at);
 
         $this->assertNotEquals($userLoginPin, $user->{config('login-via-pin.columns.pin')});
     }

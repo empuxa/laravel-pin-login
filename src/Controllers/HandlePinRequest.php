@@ -91,7 +91,7 @@ class HandlePinRequest extends Controller
     }
 
     /**
-     * @param  array<int, int|string>  $pin
+     * @param array<int, int|string> $pin
      *
      * @throws \Illuminate\Validation\ValidationException
      */
