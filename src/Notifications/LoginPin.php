@@ -16,7 +16,7 @@ class LoginPin extends Notification
     }
 
     /**
-     * @param array<string> $notifiable
+     * @param  array<string>  $notifiable
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      *
