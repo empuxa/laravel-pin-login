@@ -25,11 +25,9 @@
         "spatie/laravel-package-tools": "^1.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.2",
         "orchestra/testbench": "^7.0|^8.0",
         "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^9.5",
-        "spatie/ray": "^1.28"
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -43,8 +41,7 @@
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
-        "test-coverage": "vendor/bin/phpunit --coverage",
-        "format": "vendor/bin/pint"
+        "test-coverage": "vendor/bin/phpunit --coverage"
     },
     "config": {
         "sort-packages": true,
@@ -59,6 +56,6 @@
             ]
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
