@@ -7,7 +7,6 @@ use Illuminate\Notifications\Notification;
 
 /**
  * @todo test
- * @todo i18n
  */
 class LoginPin extends Notification
 {
@@ -30,22 +29,21 @@ class LoginPin extends Notification
     public function toMail(mixed $notifiable): MailMessage
     {
         $params = [
+            'app'         => config('app.name'),
             'name'        => $notifiable->name,
             'valid_until' => $notifiable->{config('login-via-pin.columns.pin_valid_until')},
             'pin'         => $this->pin,
             'ip'          => $this->ip,
         ];
 
-        // This notification uses a custom markdown template.
-        // Therefore, the order of lines is different from the other notifications.
         return (new MailMessage)
-            ->subject(__('notification.login_pin.mail.subject', $params))
-            ->greeting(__('notification.login_pin.mail.greeting', $params))
-            ->line(__('notification.login_pin.mail.line-1', $params))
-            ->line(__('notification.login_pin.mail.line-2', $params))
-            ->line(__('notification.login_pin.mail.line-3', $params))
+            ->subject(__('login-via-pin::notification.mail.subject', $params))
+            ->greeting(__('login-via-pin::notification.mail.greeting', $params))
+            ->line(__('login-via-pin::notification.mail.line-1', $params))
+            ->line(__('login-via-pin::notification.mail.line-2', $params))
+            ->line(__('login-via-pin::notification.mail.line-3', $params))
             ->action(
-                __('notification.login_pin.mail.cta', $params),
+                __('login-via-pin::notification.mail.cta', $params),
                 route('login-via-pin.pin.show'),
             )
             ->markdown('login-via-pin::notification', [

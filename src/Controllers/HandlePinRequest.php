@@ -4,6 +4,7 @@ namespace Empuxa\LoginViaPin\Controllers;
 
 use Empuxa\LoginViaPin\Events\LoggedInViaPin;
 use Empuxa\LoginViaPin\Exceptions\MissingSessionInformation;
+use Empuxa\LoginViaPin\Jobs\CreateAndSendLoginPin;
 use Empuxa\LoginViaPin\Jobs\ResetLoginPin;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
@@ -19,6 +20,9 @@ class HandlePinRequest extends Controller
 {
     protected ?string $pin = null;
 
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
     protected $user;
 
     public static function getUserByIdentifier(): Model
@@ -40,7 +44,7 @@ class HandlePinRequest extends Controller
         $this->user = self::getUserByIdentifier();
 
         $this->ensureRequestIsNotRateLimited();
-        $this->ensurePinIsNotExpired();
+        $this->ensurePinIsNotExpired($request->ip());
         $this->validatePin($request->input('pin'));
 
         $request->session()->regenerate();
@@ -53,8 +57,7 @@ class HandlePinRequest extends Controller
         event(new LoggedInViaPin($this->user, $request->ip()));
 
         return redirect(config('login-via-pin.redirect'))->with([
-            // @todo i18n
-            'message' => __('controllers/session.store.success'),
+            'message' => __('login-via-pin::controller.handle_pin_request.success'),
         ]);
     }
 
@@ -68,8 +71,7 @@ class HandlePinRequest extends Controller
         }
 
         throw ValidationException::withMessages([
-            // @todo i18n
-            'pin' => __('controllers/session.store.error.rate_limit', [
+            'pin' => __('login-via-pin::controller.handle_pin_request.error.rate_limit', [
                 'seconds' => RateLimiter::availableIn($this->throttleKey()),
             ]),
         ]);
@@ -78,15 +80,17 @@ class HandlePinRequest extends Controller
     /**
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function ensurePinIsNotExpired(): void
+    public function ensurePinIsNotExpired(string $ip): void
     {
         if (now() < $this->user->{config('login-via-pin.columns.pin_valid_until')}) {
             return;
         }
 
+        // Send a new PIN for better UX
+        CreateAndSendLoginPin::dispatch($this->user, $ip);
+
         throw ValidationException::withMessages([
-            // @todo i18n
-            'pin' => __('controllers/session.store.error.expired'),
+            'pin' => __('login-via-pin::controller.handle_pin_request.error.expired'),
         ]);
     }
 
@@ -108,8 +112,7 @@ class HandlePinRequest extends Controller
         RateLimiter::hit($this->throttleKey());
 
         throw ValidationException::withMessages([
-            // @todo i18n
-            'pin' => __('controllers/session.store.error.pin_wrong', [
+            'pin' => __('login-via-pin::controller.handle_pin_request.error.wrong_pin', [
                 'attempts_left' => config('login-via-pin.pin.max_attempts') - RateLimiter::attempts(
                     $this->throttleKey()
                 ),
