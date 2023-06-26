@@ -21,7 +21,7 @@ You might wonder why you should opt for a PIN login instead of a magic link solu
 
 ## Requirements
 
-In addition to Laravel v9.33 or newer, this package relies on [Alpine.js](https://alpinejs.dev/).
+In addition to Laravel v9.52 or newer, this package relies on [Alpine.js](https://alpinejs.dev/).
 If you're using [Laravel LiveWire](https://laravel-livewire.com/), you are already good to go.
 Otherwise, ensure to include Alpine.js in your application.
 Also, you need to have a notifiable user model.
