@@ -8,6 +8,7 @@ use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class PinRequest extends BaseRequest
@@ -24,7 +25,11 @@ class PinRequest extends BaseRequest
         return [
             'pin'      => config('pin-login.pin.validation'),
             'pin.*'    => 'required|numeric|digits:1',
-            'remember' => 'sometimes|required|boolean',
+            'remember' => [
+                'sometimes',
+                // Boolean doesn't work here since it's a fake input
+                Rule::in(['true', 'false']),
+            ],
         ];
     }
 
