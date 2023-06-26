@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notification;
  */
 class LoginPin extends Notification
 {
-    public function __construct(private readonly string $pin, private readonly string $ip)
+    public function __construct(protected readonly string $pin, protected readonly string $ip)
     {
     }
 
