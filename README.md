@@ -73,6 +73,16 @@ You may want to make adjustments to this notification to align it with your pref
 If you plan on utilizing SMS or similar as your preferred notification channel, you have the option to create a custom notification class.
 The PIN and the user's IP address will be passed to the constructor of this class. Finally, replace the default notification class within the `config/pin-login.php` file with your custom notification.
 
+### Custom User Model Scope
+To apply a scope to your user model, add the following method to your model:
+
+```php
+public static function pinLoginScope(): Builder
+{
+    return self::yourGlobalScope();
+}
+```
+
 ## Testing
 
 ```bash
