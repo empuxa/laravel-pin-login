@@ -37,7 +37,7 @@ composer require empuxa/laravel-pin-login
 Copy the vendor files and adjust the config file `config/pin-login.php` to your needs:
 
 ```bash
-php artisan vendor:publish --provider="Empuxa\PinLogin\ServiceProvider"
+php artisan vendor:publish --provider="Empuxa\PinLogin\PinLoginServiceProvider"
 ```
 
 Run the migrations:
