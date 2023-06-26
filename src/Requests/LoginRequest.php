@@ -61,7 +61,14 @@ class LoginRequest extends FormRequest
 
     public function isUserExistent(): bool
     {
-        return config('pin-login.model')::query()
+        $query = config('pin-login.model')::query();
+
+        // If the model has a dedicated scope for the pin login, we will use it.
+        if (method_exists(config('pin-login.model'), 'pinLoginScope')) {
+            $query = config('pin-login.model')::pinLoginScope();
+        }
+
+        return $query
             ->where(
                 config('pin-login.columns.identifier'),
                 $this->input(config('pin-login.columns.identifier')),

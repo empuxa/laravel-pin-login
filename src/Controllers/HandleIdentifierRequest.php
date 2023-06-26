@@ -35,7 +35,14 @@ class HandleIdentifierRequest extends Controller
 
     public static function getUser(string $identifier): Model
     {
-        return config('pin-login.model')::query()
+        $query = config('pin-login.model')::query();
+
+        // If the model has a dedicated scope for the pin login, we will use it.
+        if (method_exists(config('pin-login.model'), 'pinLoginScope')) {
+            $query = config('pin-login.model')::pinLoginScope();
+        }
+
+        return $query
             ->where(config('pin-login.columns.identifier'), $identifier)
             ->first();
     }
