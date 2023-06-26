@@ -4,6 +4,7 @@ namespace Empuxa\PinLogin\Tests\Feature\Controllers;
 
 use Empuxa\PinLogin\Tests\TestbenchTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
 
@@ -57,6 +58,8 @@ class HandlePinRequestTest extends TestbenchTestCase
 
     public function test_cannot_login_with_rate_limit(): void
     {
+        Config::set('pin-login.pin.enable_throttling', true);
+
         $user = $this->createUser([
             config('pin-login.columns.pin_valid_until') => now()->addMinutes(10),
         ]);
@@ -98,6 +101,41 @@ class HandlePinRequestTest extends TestbenchTestCase
             ->withSession([
                 config('pin-login.columns.identifier') => $user->{config('pin-login.columns.identifier')},
             ])
+            ->post(route('pin-login.pin.handle'), [
+                'pin' => [1, 2, 3, 4, 5, 6],
+            ]);
+
+        $response->assertStatus(302);
+
+        $response->assertSessionHasNoErrors();
+
+        $response->assertRedirect(config('pin-login.redirect'));
+
+        $this->assertAuthenticatedAs($user);
+    }
+
+    public function test_can_login_through_disabled_rate_limit(): void
+    {
+        Config::set('pin-login.pin.enable_throttling', false);
+
+        $user = $this->createUser([
+            config('pin-login.columns.pin_valid_until') => now()->addMinutes(10),
+        ]);
+
+        $session = [
+            config('pin-login.columns.identifier') => $user->{config('pin-login.columns.identifier')},
+        ];
+
+        for ($i = 0; $i < config('pin-login.pin.max_attempts'); $i++) {
+            $this
+                ->withSession($session)
+                ->post(route('pin-login.pin.handle'), [
+                    'pin' => [9, 9, 9, 9, 9, 9],
+                ]);
+        }
+
+        $response = $this
+            ->withSession($session)
             ->post(route('pin-login.pin.handle'), [
                 'pin' => [1, 2, 3, 4, 5, 6],
             ]);

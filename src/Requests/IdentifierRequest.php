@@ -3,18 +3,12 @@
 namespace Empuxa\PinLogin\Requests;
 
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
-class LoginRequest extends FormRequest
+class IdentifierRequest extends BaseRequest
 {
-    public function authorize(): bool
-    {
-        return auth()->guest();
-    }
-
     /**
      * @return array<int|string, mixed>
      */
@@ -43,6 +37,10 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
+        if (config('pin-login.identifier.enable_throttling', true) === false) {
+            return;
+        }
+
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), config('pin-login.identifier.max_attempts') - 1)) {
             return;
         }
@@ -59,37 +57,18 @@ class LoginRequest extends FormRequest
         ]);
     }
 
-    public function isUserExistent(): bool
-    {
-        $query = config('pin-login.model')::query();
-
-        // If the model has a dedicated scope for the pin login, we will use it.
-        if (method_exists(config('pin-login.model'), 'pinLoginScope')) {
-            $query = config('pin-login.model')::pinLoginScope();
-        }
-
-        return $query
-            ->where(
-                config('pin-login.columns.identifier'),
-                $this->input(config('pin-login.columns.identifier')),
-            )
-            ->exists();
-    }
-
     /**
      * @throws \Illuminate\Validation\ValidationException
      */
     public function checkIfUserExists(): void
     {
-        if (! $this->isUserExistent()) {
+        if (is_null($this->getUserModel())) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 config('pin-login.columns.identifier') => __('auth.failed'),
             ]);
         }
-
-        RateLimiter::clear($this->throttleKey());
     }
 
     public function throttleKey(): string

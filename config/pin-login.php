@@ -7,6 +7,12 @@ return [
      */
     'model' => \App\Models\User::class,
 
+    /**
+     * The notification to send to the user.
+     * Default: \Empuxa\PinLogin\Notifications\LoginPin::class
+     */
+    'notification' => \Empuxa\PinLogin\Notifications\LoginPin::class,
+
     'columns' => [
         /**
          * The main identifier of the user model.
@@ -26,6 +32,43 @@ return [
          * Default: 'login_pin_valid_until'
          */
         'pin_valid_until' => 'login_pin_valid_until',
+    ],
+
+    'route' => [
+        /**
+         * The middleware to use for the route.
+         * Default: ['web', 'guest]
+         */
+        'middleware' => ['web', 'guest'],
+
+        /**
+         * The prefix for the route.
+         * Default: 'login'
+         */
+        'prefix' => 'login',
+    ],
+
+    'identifier' => [
+        /**
+         * The maximum number of attempts to get the user per minute.
+         * Afterward, the user gets blocked for 60 seconds.
+         * See the default Laravel RateLimiter for more information.
+         * Default: 5
+         */
+        'max_attempts' => 5,
+
+        /**
+         * The validation rules for the email.
+         * Default: 'email|required'
+         */
+        'validation' => 'required|email',
+
+        /**
+         * Enable throttling for the identifier request.
+         * This will block the user for 60 seconds after `max_attempts` attempts per minute.
+         * Default: true
+         */
+        'enable_throttling' => true,
     ],
 
     'pin' => [
@@ -52,46 +95,17 @@ return [
         'length' => 6,
 
         /**
-         * The validation rules for the PIN.
-         * Default: 'required|digits:6'
+         * The validation rules for the PIN array.
+         * Default: 'required|array|size:6'
          */
-        'validation' => 'required|digits:6',
-    ],
-
-    'identifier' => [
-        /**
-         * The maximum number of attempts to get the user per minute.
-         * Afterward, the user gets blocked for 60 seconds.
-         * See the default Laravel RateLimiter for more information.
-         * Default: 5
-         */
-        'max_attempts' => 5,
+        'validation' => 'required|array|size:6',
 
         /**
-         * The validation rules for the email.
-         * Default: 'email|required'
+         * Enable throttling for the PIN request.
+         * This will block the user for 60 seconds after `max_attempts` attempts per minute.
+         * Default: true
          */
-        'validation' => 'required|email',
-    ],
-
-    /**
-     * The notification to send to the user.
-     * Default: \Empuxa\PinLogin\Notifications\LoginPin::class
-     */
-    'notification' => \Empuxa\PinLogin\Notifications\LoginPin::class,
-
-    'route' => [
-        /**
-         * The middleware to use for the route.
-         * Default: ['web']
-         */
-        'middleware' => ['web', 'guest'],
-
-        /**
-         * The prefix for the route.
-         * Default: 'login'
-         */
-        'prefix' => 'login',
+        'enable_throttling' => true,
     ],
 
     /**
