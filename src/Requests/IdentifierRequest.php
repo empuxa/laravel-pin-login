@@ -62,13 +62,15 @@ class IdentifierRequest extends BaseRequest
      */
     public function checkIfUserExists(): void
     {
-        if (is_null($this->getUserModel())) {
-            RateLimiter::hit($this->throttleKey());
-
-            throw ValidationException::withMessages([
-                config('pin-login.columns.identifier') => __('auth.failed'),
-            ]);
+        if (! is_null($this->getUserModel())) {
+            return;
         }
+
+        RateLimiter::hit($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            config('pin-login.columns.identifier') => __('auth.failed'),
+        ]);
     }
 
     public function throttleKey(): string
