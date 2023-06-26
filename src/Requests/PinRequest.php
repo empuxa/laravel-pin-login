@@ -22,8 +22,9 @@ class PinRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'pin'   => config('pin-login.pin.validation'),
-            'pin.*' => 'required|numeric|digits:1',
+            'pin'      => config('pin-login.pin.validation'),
+            'pin.*'    => 'required|numeric|digits:1',
+            'remember' => 'sometimes|required|boolean',
         ];
     }
 
