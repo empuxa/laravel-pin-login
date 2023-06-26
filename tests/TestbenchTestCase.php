@@ -18,6 +18,8 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
     protected function defineDatabaseMigrations()
     {
         $this->loadLaravelMigrations();
+
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 
     protected function defineEnvironment($app)

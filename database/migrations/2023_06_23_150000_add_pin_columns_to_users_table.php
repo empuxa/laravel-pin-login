@@ -17,7 +17,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table(app(config('pin-login.model'))->getTable(), static function (Blueprint $table): void {
-            $table->dropColumns([
+            $table->dropColumn([
                 config('pin-login.columns.pin'),
                 config('pin-login.columns.pin_valid_until'),
             ]);

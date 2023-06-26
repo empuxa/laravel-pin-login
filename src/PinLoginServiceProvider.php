@@ -16,7 +16,5 @@ class PinLoginServiceProvider extends PackageServiceProvider
             ->hasTranslations()
             ->hasViews()
             ->hasRoute('web');
-
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 }
