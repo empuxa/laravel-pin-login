@@ -12,8 +12,9 @@ class PinLoginServiceProvider extends PackageServiceProvider
         $package
             ->name('pin-login')
             ->hasConfigFile()
-            ->hasViews()
+            ->hasMigration('add_pin_columns_to_users_table')
             ->hasTranslations()
+            ->hasViews()
             ->hasRoute('web');
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
