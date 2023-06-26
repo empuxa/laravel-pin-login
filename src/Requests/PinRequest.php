@@ -22,7 +22,7 @@ class PinRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'pin' => config('pin-login.pin.validation'),
+            'pin'   => config('pin-login.pin.validation'),
             'pin.*' => 'required|numeric|digits:1',
         ];
     }
@@ -108,8 +108,8 @@ class PinRequest extends BaseRequest
         throw ValidationException::withMessages([
             'pin' => __('pin-login::controller.handle_pin_request.error.wrong_pin', [
                 'attempts_left' => config('pin-login.pin.max_attempts') - RateLimiter::attempts(
-                        $this->throttleKey(),
-                    ),
+                    $this->throttleKey(),
+                ),
             ]),
         ]);
     }
