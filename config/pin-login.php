@@ -85,7 +85,7 @@ return [
          * The middleware to use for the route.
          * Default: ['web']
          */
-        'middleware' => ['web'],
+        'middleware' => ['web', 'guest'],
 
         /**
          * The prefix for the route.
