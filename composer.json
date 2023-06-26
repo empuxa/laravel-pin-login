@@ -53,7 +53,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "PinLoginServiceProvider"
+                "Empuxa\\PinLogin\\PinLoginServiceProvider"
             ]
         }
     },
