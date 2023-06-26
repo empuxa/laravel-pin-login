@@ -11,7 +11,7 @@ class ShowPinFormTest extends TestbenchTestCase
 
     public function test_cannot_render_pin_screen_because_of_missing_session(): void
     {
-        $response = $this->get(route('pin-login.pin.show'));
+        $response = $this->get(route('pin-login.pin.form'));
 
         $response->assertStatus(500);
     }
@@ -22,7 +22,7 @@ class ShowPinFormTest extends TestbenchTestCase
             ->withSession([
                 config('pin-login.columns.identifier') => 'admin@example.com',
             ])
-            ->get(route('pin-login.pin.show'));
+            ->get(route('pin-login.pin.form'));
 
         $response->assertStatus(200);
     }

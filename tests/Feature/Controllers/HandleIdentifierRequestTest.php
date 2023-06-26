@@ -27,7 +27,7 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
 
         Bus::assertDispatched(CreateAndSendLoginPin::class);
 
-        $response->assertRedirect(route('pin-login.pin.show'));
+        $response->assertRedirect(route('pin-login.pin.form'));
 
         $this->assertGuest();
     }

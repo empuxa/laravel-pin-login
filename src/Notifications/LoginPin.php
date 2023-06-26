@@ -44,7 +44,7 @@ class LoginPin extends Notification
             ->line(__('pin-login::notification.mail.line-3', $params))
             ->action(
                 __('pin-login::notification.mail.cta', $params),
-                route('pin-login.pin.show'),
+                route('pin-login.pin.form'),
             )
             ->markdown('pin-login::notification', [
                 'notifiable' => $notifiable,

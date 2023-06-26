@@ -11,7 +11,7 @@ class ShowIdentifierFormTest extends TestbenchTestCase
 
     public function test_can_render_login_screen(): void
     {
-        $response = $this->get(route('pin-login.identifier.show'));
+        $response = $this->get(route('pin-login.identifier.form'));
 
         $response->assertStatus(200);
     }

@@ -30,7 +30,7 @@ class HandleIdentifierRequest extends Controller
 
         event(new LoginRequestViaPin($user, $request->ip()));
 
-        return redirect(route('pin-login.pin.show'));
+        return redirect(route('pin-login.pin.form'));
     }
 
     public static function getUser(string $identifier): Model
