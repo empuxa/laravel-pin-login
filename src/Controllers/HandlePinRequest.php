@@ -25,7 +25,7 @@ class HandlePinRequest extends Controller
     {
         $request->authenticate();
 
-        //$request->session()->regenerate();
+        // $request->session()->regenerate();
 
         $this->user = $request->getUserModel(
             session(config('pin-login.columns.identifier')),
