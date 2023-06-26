@@ -16,5 +16,10 @@ class PinLoginServiceProvider extends PackageServiceProvider
             ->hasTranslations()
             ->hasViews()
             ->hasRoute('web');
+
+        // Fixes TestBench not being able to load and execute migrations.
+        // Please create a PR if you know a better solution. Adding this to the
+        // TestbenchTestCase.php file doesn't work for Laravel 9.
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 }
