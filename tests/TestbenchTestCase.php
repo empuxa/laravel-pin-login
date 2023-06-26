@@ -3,7 +3,7 @@
 namespace Empuxa\PinLogin\Tests;
 
 use Empuxa\PinLogin\Models\User;
-use Empuxa\PinLogin\ServiceProvider;
+use Empuxa\PinLogin\PinLoginServiceProvider;
 use Illuminate\Support\Str;
 
 class TestbenchTestCase extends \Orchestra\Testbench\TestCase
@@ -11,7 +11,7 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app): array
     {
         return [
-            ServiceProvider::class,
+            PinLoginServiceProvider::class,
         ];
     }
 

@@ -5,7 +5,7 @@ namespace Empuxa\PinLogin;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class ServiceProvider extends PackageServiceProvider
+class PinLoginServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
