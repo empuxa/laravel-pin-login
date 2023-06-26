@@ -1,6 +1,6 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Models;
+namespace Empuxa\PinLogin\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

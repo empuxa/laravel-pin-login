@@ -15,7 +15,8 @@
             Enter your login
         </h1>
 
-        <form action="{{ route('login-via-pin.identifier.handle') }}" method="POST">
+        {{-- You only need the form parts starting here --}}
+        <form action="{{ route('pin-login.identifier.handle') }}" method="POST">
             @csrf
 
             <div class="space-y-6">
@@ -46,17 +47,17 @@
                 </div>
 
                 <div>
-                    <label for="{{ config('login-via-pin.columns.identifier') }}" class="block font-semibold text-gray-700 dark:text-gray-200">
+                    <label for="{{ config('pin-login.columns.identifier') }}" class="block font-semibold text-gray-700 dark:text-gray-200">
                         Email address
                     </label>
                     <div class="mt-1 flex rounded-md shadow-sm w-full">
-                        <input id="{{ config('login-via-pin.columns.identifier') }}"
-                               name="{{ config('login-via-pin.columns.identifier') }}"
+                        <input id="{{ config('pin-login.columns.identifier') }}"
+                               name="{{ config('pin-login.columns.identifier') }}"
                                type="text"
                                value=""
                                class="py-2 px-5 block border-gray-300 dark:border-gray-600 border appearance-none focus-primary w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 disabled:cursor-not-allowed rounded-md"
                                aria-required="true"
-                               autocomplete="{{ config('login-via-pin.columns.identifier') }}"
+                               autocomplete="{{ config('pin-login.columns.identifier') }}"
                         >
                     </div>
                 </div>

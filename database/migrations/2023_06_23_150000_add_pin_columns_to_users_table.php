@@ -8,18 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table(app(config('login-via-pin.model'))->getTable(), static function (Blueprint $table): void {
-            $table->string(config('login-via-pin.columns.pin'))->nullable();
-            $table->timestamp(config('login-via-pin.columns.pin_valid_until'))->nullable();
+        Schema::table(app(config('pin-login.model'))->getTable(), static function (Blueprint $table): void {
+            $table->string(config('pin-login.columns.pin'))->nullable();
+            $table->timestamp(config('pin-login.columns.pin_valid_until'))->nullable();
         });
     }
 
     public function down(): void
     {
-        Schema::table(app(config('login-via-pin.model'))->getTable(), static function (Blueprint $table): void {
+        Schema::table(app(config('pin-login.model'))->getTable(), static function (Blueprint $table): void {
             $table->dropColumns([
-                config('login-via-pin.columns.pin'),
-                config('login-via-pin.columns.pin_valid_until'),
+                config('pin-login.columns.pin'),
+                config('pin-login.columns.pin_valid_until'),
             ]);
         });
     }

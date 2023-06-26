@@ -1,6 +1,6 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Notifications;
+namespace Empuxa\PinLogin\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -31,22 +31,22 @@ class LoginPin extends Notification
         $params = [
             'app'         => config('app.name'),
             'name'        => $notifiable->name,
-            'valid_until' => $notifiable->{config('login-via-pin.columns.pin_valid_until')},
+            'valid_until' => $notifiable->{config('pin-login.columns.pin_valid_until')},
             'pin'         => $this->pin,
             'ip'          => $this->ip,
         ];
 
         return (new MailMessage)
-            ->subject(__('login-via-pin::notification.mail.subject', $params))
-            ->greeting(__('login-via-pin::notification.mail.greeting', $params))
-            ->line(__('login-via-pin::notification.mail.line-1', $params))
-            ->line(__('login-via-pin::notification.mail.line-2', $params))
-            ->line(__('login-via-pin::notification.mail.line-3', $params))
+            ->subject(__('pin-login::notification.mail.subject', $params))
+            ->greeting(__('pin-login::notification.mail.greeting', $params))
+            ->line(__('pin-login::notification.mail.line-1', $params))
+            ->line(__('pin-login::notification.mail.line-2', $params))
+            ->line(__('pin-login::notification.mail.line-3', $params))
             ->action(
-                __('login-via-pin::notification.mail.cta', $params),
-                route('login-via-pin.pin.show'),
+                __('pin-login::notification.mail.cta', $params),
+                route('pin-login.pin.show'),
             )
-            ->markdown('login-via-pin::notification', [
+            ->markdown('pin-login::notification', [
                 'notifiable' => $notifiable,
                 'pin'        => str_split($this->pin),
             ]);

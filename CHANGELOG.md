@@ -1,4 +1,4 @@
 # Changelog
 
-All notable changes to `login-via-pin` will be documented in this file.
+All notable changes to `laravel-pin-login` will be documented in this file.
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Exceptions;
+namespace Empuxa\PinLogin\Exceptions;
 
 use Exception;
 

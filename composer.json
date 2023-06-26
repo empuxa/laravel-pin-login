@@ -1,11 +1,12 @@
 {
-    "name": "empuxa/login-via-pin",
+    "name": "empuxa/laravel-pin-login",
     "description": "Say goodbye to passwords and sign in via PIN instead.",
     "keywords": [
         "empuxa",
-        "login-via-pin"
+        "pin-login",
+        "passwordless"
     ],
-    "homepage": "https://github.com/empuxa/login-via-pin",
+    "homepage": "https://github.com/empuxa/laravel-pin-login",
     "license": "MIT",
     "authors": [
         {
@@ -31,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Empuxa\\LoginViaPin\\": "src"
+            "Empuxa\\PinLogin\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Empuxa\\LoginViaPin\\Tests\\": "tests"
+            "Empuxa\\PinLogin\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -52,7 +53,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Empuxa\\LoginViaPin\\ServiceProvider"
+                "Empuxa\\PinLogin\\ServiceProvider"
             ]
         }
     },

@@ -1,6 +1,6 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Events;
+namespace Empuxa\PinLogin\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;

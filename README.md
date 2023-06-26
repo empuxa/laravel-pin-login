@@ -1,10 +1,10 @@
 # Laravel PIN Login
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/empuxa/login-via-pin.svg?style=flat-square)](https://packagist.org/packages/empuxa/login-via-pin)
-[![Tests](https://img.shields.io/github/actions/workflow/status/empuxa/login-via-pin/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/empuxa/login-via-pin/actions/workflows/run-tests.yml)
-[![Total Downloads](https://img.shields.io/packagist/dt/empuxa/login-via-pin.svg?style=flat-square)](https://packagist.org/packages/empuxa/login-via-pin)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/empuxa/laravel-pin-login.svg?style=flat-square)](https://packagist.org/packages/empuxa/laravel-pin-login)
+[![Tests](https://img.shields.io/github/actions/workflow/status/empuxa/laravel-pin-login/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/empuxa/laravel-pin-login/actions/workflows/run-tests.yml)
+[![Total Downloads](https://img.shields.io/packagist/dt/empuxa/laravel-pin-login.svg?style=flat-square)](https://packagist.org/packages/empuxa/laravel-pin-login)
 
-![Banner](https://banners.beyondco.de/Laravel%20PIN%20Login.png?theme=light&packageManager=composer+require&packageName=empuxa%2Flogin-via-pin&pattern=architect&style=style_1&description=Goodbye+passwords%21&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
+![Banner](https://banners.beyondco.de/Laravel%20PIN%20Login.png?theme=light&packageManager=composer+require&packageName=empuxa%2Fpin-login&pattern=architect&style=style_1&description=Goodbye+passwords%21&md=1&showWatermark=0&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
 
 Say goodbye to passwords and sign in via PIN instead! 
 Laravel PIN Login is a convenient package that allows you to easily add a PIN login feature to your Laravel application.
@@ -31,13 +31,13 @@ Also, you need to have a notifiable user model.
 Install the package via composer:
 
 ```bash
-composer require empuxa/login-via-pin
+composer require empuxa/laravel-pin-login
 ```
 
-Copy the vendor files and adjust the config file `config/login-via-pin.php` to your needs:
+Copy the vendor files and adjust the config file `config/pin-login.php` to your needs:
 
 ```bash
-php artisan vendor:publish --provider="Empuxa\LoginViaPin\ServiceProvider"
+php artisan vendor:publish --provider="Empuxa\PinLogin\ServiceProvider"
 ```
 
 Run the migrations:
@@ -59,7 +59,7 @@ The sign-in process for this repository involves three steps:
 ### Customizing the Views
 
 While the initial steps are relatively straightforward, it's now necessary to customize the views. 
-These views have been designed to be as simple as possible (some might even consider them "ugly") and can be located in the `resources/views/vendor/login-via-pin` directory.
+These views have been designed to be as simple as possible (some might even consider them "ugly") and can be located in the `resources/views/vendor/pin-login` directory.
 
 *Why are they not visually appealing?*
 Different applications adopt various layouts and frameworks. 
@@ -71,7 +71,7 @@ You may want to make adjustments to this notification to align it with your pref
 
 #### Different Notification Channels
 If you plan on utilizing SMS or similar as your preferred notification channel, you have the option to create a custom notification class.
-The PIN and the user's IP address will be passed to the constructor of this class. Finally, replace the default notification class within the `config/login-via-pin.php` file with your custom notification.
+The PIN and the user's IP address will be passed to the constructor of this class. Finally, replace the default notification class within the `config/pin-login.php` file with your custom notification.
 
 ## Testing
 

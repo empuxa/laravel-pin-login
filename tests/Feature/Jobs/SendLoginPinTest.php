@@ -1,9 +1,9 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Tests\Feature\Jobs;
+namespace Empuxa\PinLogin\Tests\Feature\Jobs;
 
-use Empuxa\LoginViaPin\Jobs\CreateAndSendLoginPin;
-use Empuxa\LoginViaPin\Tests\TestbenchTestCase;
+use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
+use Empuxa\PinLogin\Tests\TestbenchTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 
@@ -16,23 +16,23 @@ class SendLoginPinTest extends TestbenchTestCase
         Notification::fake();
 
         $user = $this->createUser([
-            config('login-via-pin.columns.pin_valid_until') => now(),
+            config('pin-login.columns.pin_valid_until') => now(),
         ]);
 
-        $this->assertFalse($user->{config('login-via-pin.columns.pin_valid_until')}->isFuture());
+        $this->assertFalse($user->{config('pin-login.columns.pin_valid_until')}->isFuture());
 
-        $userLoginPin = $user->{config('login-via-pin.columns.pin')};
+        $userLoginPin = $user->{config('pin-login.columns.pin')};
         $userUpdatedAt = $user->updated_at;
 
         CreateAndSendLoginPin::dispatchSync($user);
 
         $user->fresh();
 
-        $this->assertTrue($user->{config('login-via-pin.columns.pin_valid_until')}->isFuture());
+        $this->assertTrue($user->{config('pin-login.columns.pin_valid_until')}->isFuture());
 
         // @todo fix this assignment
         // $this->assertEquals($userUpdatedAt, $user->updated_at);
 
-        $this->assertNotEquals($userLoginPin, $user->{config('login-via-pin.columns.pin')});
+        $this->assertNotEquals($userLoginPin, $user->{config('pin-login.columns.pin')});
     }
 }

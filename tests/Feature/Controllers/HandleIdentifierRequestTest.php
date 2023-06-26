@@ -1,9 +1,9 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Tests\Feature\Controllers;
+namespace Empuxa\PinLogin\Tests\Feature\Controllers;
 
-use Empuxa\LoginViaPin\Jobs\CreateAndSendLoginPin;
-use Empuxa\LoginViaPin\Tests\TestbenchTestCase;
+use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
+use Empuxa\PinLogin\Tests\TestbenchTestCase;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
@@ -19,15 +19,15 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
 
         $user = $this->createUser();
 
-        $response = $this->post(route('login-via-pin.identifier.handle'), [
-            config('login-via-pin.columns.identifier') => $user->email,
+        $response = $this->post(route('pin-login.identifier.handle'), [
+            config('pin-login.columns.identifier') => $user->email,
         ]);
 
         $response->assertSessionHasNoErrors();
 
         Bus::assertDispatched(CreateAndSendLoginPin::class);
 
-        $response->assertRedirect(route('login-via-pin.pin.show'));
+        $response->assertRedirect(route('pin-login.pin.show'));
 
         $this->assertGuest();
     }
@@ -36,8 +36,8 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
     {
         Bus::fake();
 
-        $response = $this->post(route('login-via-pin.identifier.handle'), [
-            config('login-via-pin.columns.identifier') => 'not_existing@example.com',
+        $response = $this->post(route('pin-login.identifier.handle'), [
+            config('pin-login.columns.identifier') => 'not_existing@example.com',
         ]);
 
         $response->assertSessionHasErrors('email', __('auth.failed'));
@@ -51,9 +51,9 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
     {
         Event::fake();
 
-        for ($i = 0; $i < config('login-via-pin.identifier.max_attempts'); $i++) {
-            $this->post(route('login-via-pin.identifier.handle'), [
-                config('login-via-pin.columns.identifier') => 'non_existing@example.com',
+        for ($i = 0; $i < config('pin-login.identifier.max_attempts'); $i++) {
+            $this->post(route('pin-login.identifier.handle'), [
+                config('pin-login.columns.identifier') => 'non_existing@example.com',
             ]);
         }
 

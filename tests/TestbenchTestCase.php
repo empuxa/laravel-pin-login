@@ -1,9 +1,9 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Tests;
+namespace Empuxa\PinLogin\Tests;
 
-use Empuxa\LoginViaPin\Models\User;
-use Empuxa\LoginViaPin\ServiceProvider;
+use Empuxa\PinLogin\Models\User;
+use Empuxa\PinLogin\ServiceProvider;
 use Illuminate\Support\Str;
 
 class TestbenchTestCase extends \Orchestra\Testbench\TestCase
@@ -30,7 +30,7 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
             'prefix'   => '',
         ]);
 
-        $app['config']->set('login-via-pin.model', User::class);
+        $app['config']->set('pin-login.model', User::class);
     }
 
     /**
@@ -38,7 +38,7 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
      */
     protected function createUser(array $params = [])
     {
-        return config('login-via-pin.model')::create(array_merge(
+        return config('pin-login.model')::create(array_merge(
             // Default Laravel params
             [
                 'name'              => 'Test User',
@@ -49,8 +49,8 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
             ],
             // Default package params
             [
-                config('login-via-pin.columns.pin')             => '$2y$10$DJDW1ZCcd.6iqtq/JdivDuWTUCDxVES/efzv1e61CKLhdIJPupzI6', // 123456,
-                config('login-via-pin.columns.pin_valid_until') => null,
+                config('pin-login.columns.pin')             => '$2y$10$DJDW1ZCcd.6iqtq/JdivDuWTUCDxVES/efzv1e61CKLhdIJPupzI6', // 123456,
+                config('pin-login.columns.pin_valid_until') => now()->addSecond(),
             ],
             // Additional test params
             $params,

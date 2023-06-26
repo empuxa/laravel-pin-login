@@ -1,6 +1,6 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Requests;
+namespace Empuxa\PinLogin\Requests;
 
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
@@ -21,7 +21,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            config('login-via-pin.columns.identifier') => config('login-via-pin.identifier.validation'),
+            config('pin-login.columns.identifier') => config('pin-login.identifier.validation'),
         ];
     }
 
@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), config('login-via-pin.identifier.max_attempts') - 1)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), config('pin-login.identifier.max_attempts') - 1)) {
             return;
         }
 
@@ -52,7 +52,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            config('login-via-pin.columns.identifier') => trans('auth.throttle', [
+            config('pin-login.columns.identifier') => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -61,10 +61,10 @@ class LoginRequest extends FormRequest
 
     public function isUserExistent(): bool
     {
-        return config('login-via-pin.model')::query()
+        return config('pin-login.model')::query()
             ->where(
-                config('login-via-pin.columns.identifier'),
-                $this->input(config('login-via-pin.columns.identifier')),
+                config('pin-login.columns.identifier'),
+                $this->input(config('pin-login.columns.identifier')),
             )
             ->exists();
     }
@@ -78,7 +78,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                config('login-via-pin.columns.identifier') => __('auth.failed'),
+                config('pin-login.columns.identifier') => __('auth.failed'),
             ]);
         }
 
@@ -87,6 +87,6 @@ class LoginRequest extends FormRequest
 
     public function throttleKey(): string
     {
-        return Str::lower($this->input(config('login-via-pin.columns.identifier'))) . '|' . $this->ip();
+        return Str::lower($this->input(config('pin-login.columns.identifier'))) . '|' . $this->ip();
     }
 }

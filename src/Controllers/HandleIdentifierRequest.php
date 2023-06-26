@@ -1,10 +1,10 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Controllers;
+namespace Empuxa\PinLogin\Controllers;
 
-use Empuxa\LoginViaPin\Events\LoginRequestViaPin;
-use Empuxa\LoginViaPin\Jobs\CreateAndSendLoginPin;
-use Empuxa\LoginViaPin\Requests\LoginRequest;
+use Empuxa\PinLogin\Events\LoginRequestViaPin;
+use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
+use Empuxa\PinLogin\Requests\LoginRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
@@ -18,25 +18,25 @@ class HandleIdentifierRequest extends Controller
     {
         $request->authenticate();
 
-        $inputOfIdentifier = $request->input(config('login-via-pin.columns.identifier'));
+        $inputOfIdentifier = $request->input(config('pin-login.columns.identifier'));
 
         $user = self::getUser($inputOfIdentifier);
 
         CreateAndSendLoginPin::dispatch($user, $request->ip());
 
         session([
-            config('login-via-pin.columns.identifier') => $inputOfIdentifier,
+            config('pin-login.columns.identifier') => $inputOfIdentifier,
         ]);
 
         event(new LoginRequestViaPin($user, $request->ip()));
 
-        return redirect(route('login-via-pin.pin.show'));
+        return redirect(route('pin-login.pin.show'));
     }
 
     public static function getUser(string $identifier): Model
     {
-        return config('login-via-pin.model')::query()
-            ->where(config('login-via-pin.columns.identifier'), $identifier)
+        return config('pin-login.model')::query()
+            ->where(config('pin-login.columns.identifier'), $identifier)
             ->first();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Empuxa\LoginViaPin;
+namespace Empuxa\PinLogin;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -10,7 +10,7 @@ class ServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('login-via-pin')
+            ->name('pin-login')
             ->hasConfigFile()
             ->hasViews()
             ->hasTranslations()

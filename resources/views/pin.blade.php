@@ -11,7 +11,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
-        const pin_length = {{ config('login-via-pin.pin.length') }};
+        const pin_length = {{ config('pin-login.pin.length') }};
     </script>
 </head>
 <body class="antialiased">
@@ -24,7 +24,7 @@
             Blabla …
         </p>
 
-        <form action="{{ route('login-via-pin.pin.handle') }}" method="POST">
+        <form action="{{ route('pin-login.pin.handle') }}" method="POST">
             @csrf
 
             <div class="space-y-6">
@@ -102,11 +102,11 @@
         </form>
 
         <div class="text-sm flex mt-10 justify-center">
-            <form method="POST" action="{{ route('login-via-pin.identifier.handle') }}">
+            <form method="POST" action="{{ route('pin-login.identifier.handle') }}">
                 @csrf
                 <input type="submit" value="Resend the PIN"
                        class="bg-transparent cursor-pointer text-light dark:text-gray-200 hover:underline">
-                <input type="hidden" name="{{ config('login-via-pin.columns.identifier') }}" value="{{ ${ config('login-via-pin.columns.identifier') } }}">
+                <input type="hidden" name="{{ config('pin-login.columns.identifier') }}" value="{{ ${ config('pin-login.columns.identifier') } }}">
             </form>
         </div>
 

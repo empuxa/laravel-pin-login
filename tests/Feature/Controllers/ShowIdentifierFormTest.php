@@ -1,8 +1,8 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Tests\Feature\Controllers;
+namespace Empuxa\PinLogin\Tests\Feature\Controllers;
 
-use Empuxa\LoginViaPin\Tests\TestbenchTestCase;
+use Empuxa\PinLogin\Tests\TestbenchTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ShowIdentifierFormTest extends TestbenchTestCase
@@ -11,7 +11,7 @@ class ShowIdentifierFormTest extends TestbenchTestCase
 
     public function test_can_render_login_screen(): void
     {
-        $response = $this->get(route('login-via-pin.identifier.show'));
+        $response = $this->get(route('pin-login.identifier.show'));
 
         $response->assertStatus(200);
     }

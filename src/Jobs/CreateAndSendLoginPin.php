@@ -1,6 +1,6 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Jobs;
+namespace Empuxa\PinLogin\Jobs;
 
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -20,12 +20,12 @@ class CreateAndSendLoginPin
      */
     public function handle(): void
     {
-        $columns = config('login-via-pin.columns');
-        $notification = config('login-via-pin.notification');
+        $columns = config('pin-login.columns');
+        $notification = config('pin-login.notification');
         $pin = self::createPin();
 
         $this->user->{$columns['pin']} = Hash::make($pin);
-        $this->user->{$columns['pin_valid_until']} = now()->addSeconds(config('login-via-pin.pin.expires_in'));
+        $this->user->{$columns['pin_valid_until']} = now()->addSeconds(config('pin-login.pin.expires_in'));
         $this->user->saveQuietly();
 
         $this->user->notify(new $notification($pin, $this->ip));
@@ -37,8 +37,8 @@ class CreateAndSendLoginPin
     public static function createPin(): string
     {
         return str_pad(
-            (string) random_int(0, (int) str_repeat('9', config('login-via-pin.pin.length'))),
-            config('login-via-pin.pin.length'),
+            (string) random_int(0, (int) str_repeat('9', config('pin-login.pin.length'))),
+            config('pin-login.pin.length'),
             '0',
             STR_PAD_LEFT,
         );

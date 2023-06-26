@@ -76,9 +76,9 @@ return [
 
     /**
      * The notification to send to the user.
-     * Default: \Empuxa\LoginViaPin\Notifications\LoginPin::class
+     * Default: \Empuxa\PinLogin\Notifications\LoginPin::class
      */
-    'notification' => \Empuxa\LoginViaPin\Notifications\LoginPin::class,
+    'notification' => \Empuxa\PinLogin\Notifications\LoginPin::class,
 
     'route' => [
         /**

@@ -1,11 +1,11 @@
 <?php
 
-namespace Empuxa\LoginViaPin\Controllers;
+namespace Empuxa\PinLogin\Controllers;
 
-use Empuxa\LoginViaPin\Events\LoggedInViaPin;
-use Empuxa\LoginViaPin\Exceptions\MissingSessionInformation;
-use Empuxa\LoginViaPin\Jobs\CreateAndSendLoginPin;
-use Empuxa\LoginViaPin\Jobs\ResetLoginPin;
+use Empuxa\PinLogin\Events\LoggedInViaPin;
+use Empuxa\PinLogin\Exceptions\MissingSessionInformation;
+use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
+use Empuxa\PinLogin\Jobs\ResetLoginPin;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,8 +27,8 @@ class HandlePinRequest extends Controller
 
     public static function getUserByIdentifier(): Model
     {
-        return config('login-via-pin.model')::query()
-            ->where(config('login-via-pin.columns.identifier'), session(config('login-via-pin.columns.identifier')))
+        return config('pin-login.model')::query()
+            ->where(config('pin-login.columns.identifier'), session(config('pin-login.columns.identifier')))
             ->firstOrFail();
     }
 
@@ -39,7 +39,7 @@ class HandlePinRequest extends Controller
      */
     public function __invoke(Request $request): RedirectResponse
     {
-        throw_unless(session(config('login-via-pin.columns.identifier')), MissingSessionInformation::class);
+        throw_unless(session(config('pin-login.columns.identifier')), MissingSessionInformation::class);
 
         $this->user = self::getUserByIdentifier();
 
@@ -56,8 +56,8 @@ class HandlePinRequest extends Controller
 
         event(new LoggedInViaPin($this->user, $request->ip()));
 
-        return redirect(config('login-via-pin.redirect'))->with([
-            'message' => __('login-via-pin::controller.handle_pin_request.success'),
+        return redirect(config('pin-login.redirect'))->with([
+            'message' => __('pin-login::controller.handle_pin_request.success'),
         ]);
     }
 
@@ -66,12 +66,12 @@ class HandlePinRequest extends Controller
      */
     public function ensureRequestIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), config('login-via-pin.pin.max_attempts') - 1)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey(), config('pin-login.pin.max_attempts') - 1)) {
             return;
         }
 
         throw ValidationException::withMessages([
-            'pin' => __('login-via-pin::controller.handle_pin_request.error.rate_limit', [
+            'pin' => __('pin-login::controller.handle_pin_request.error.rate_limit', [
                 'seconds' => RateLimiter::availableIn($this->throttleKey()),
             ]),
         ]);
@@ -82,7 +82,7 @@ class HandlePinRequest extends Controller
      */
     public function ensurePinIsNotExpired(string $ip): void
     {
-        if (now() < $this->user->{config('login-via-pin.columns.pin_valid_until')}) {
+        if (now() < $this->user->{config('pin-login.columns.pin_valid_until')}) {
             return;
         }
 
@@ -90,7 +90,7 @@ class HandlePinRequest extends Controller
         CreateAndSendLoginPin::dispatch($this->user, $ip);
 
         throw ValidationException::withMessages([
-            'pin' => __('login-via-pin::controller.handle_pin_request.error.expired'),
+            'pin' => __('pin-login::controller.handle_pin_request.error.expired'),
         ]);
     }
 
@@ -105,15 +105,15 @@ class HandlePinRequest extends Controller
             $this->pin .= (int) $digit;
         });
 
-        if (Hash::check($this->pin, $this->user->{config('login-via-pin.columns.pin')})) {
+        if (Hash::check($this->pin, $this->user->{config('pin-login.columns.pin')})) {
             return;
         }
 
         RateLimiter::hit($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'pin' => __('login-via-pin::controller.handle_pin_request.error.wrong_pin', [
-                'attempts_left' => config('login-via-pin.pin.max_attempts') - RateLimiter::attempts(
+            'pin' => __('pin-login::controller.handle_pin_request.error.wrong_pin', [
+                'attempts_left' => config('pin-login.pin.max_attempts') - RateLimiter::attempts(
                     $this->throttleKey()
                 ),
             ]),
@@ -122,6 +122,6 @@ class HandlePinRequest extends Controller
 
     public function throttleKey(): string
     {
-        return Str::lower($this->user->{config('login-via-pin.columns.identifier')});
+        return Str::lower($this->user->{config('pin-login.columns.identifier')});
     }
 }

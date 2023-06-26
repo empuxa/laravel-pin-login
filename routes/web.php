@@ -1,17 +1,17 @@
 <?php
 
-use Empuxa\LoginViaPin\Controllers\HandleIdentifierRequest;
-use Empuxa\LoginViaPin\Controllers\HandlePinRequest;
-use Empuxa\LoginViaPin\Controllers\ShowIdentifierForm;
-use Empuxa\LoginViaPin\Controllers\ShowPinForm;
+use Empuxa\PinLogin\Controllers\HandleIdentifierRequest;
+use Empuxa\PinLogin\Controllers\HandlePinRequest;
+use Empuxa\PinLogin\Controllers\ShowIdentifierForm;
+use Empuxa\PinLogin\Controllers\ShowPinForm;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(config('login-via-pin.route.middleware'))
-    ->prefix(config('login-via-pin.route.prefix'))
+Route::middleware(config('pin-login.route.middleware'))
+    ->prefix(config('pin-login.route.prefix'))
     ->group(static function (): void {
-        Route::get('/', ShowIdentifierForm::class)->name('login-via-pin.identifier.show');
-        Route::post('/', HandleIdentifierRequest::class)->name('login-via-pin.identifier.handle');
+        Route::get('/', ShowIdentifierForm::class)->name('pin-login.identifier.show');
+        Route::post('/', HandleIdentifierRequest::class)->name('pin-login.identifier.handle');
 
-        Route::get('/pin', ShowPinForm::class)->name('login-via-pin.pin.show');
-        Route::post('/pin', HandlePinRequest::class)->name('login-via-pin.pin.handle');
+        Route::get('/pin', ShowPinForm::class)->name('pin-login.pin.show');
+        Route::post('/pin', HandlePinRequest::class)->name('pin-login.pin.handle');
     });
