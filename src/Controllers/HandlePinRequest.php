@@ -3,6 +3,7 @@
 namespace Empuxa\PinLogin\Controllers;
 
 use Empuxa\PinLogin\Events\LoggedInViaPin;
+use Empuxa\PinLogin\Exceptions\MissingPin;
 use Empuxa\PinLogin\Exceptions\MissingSessionInformation;
 use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
 use Empuxa\PinLogin\Jobs\ResetLoginPin;
@@ -40,6 +41,8 @@ class HandlePinRequest extends Controller
     public function __invoke(Request $request): RedirectResponse
     {
         throw_unless(session(config('pin-login.columns.identifier')), MissingSessionInformation::class);
+
+        throw_unless($request->input('pin'), MissingPin::class);
 
         $this->user = self::getUserByIdentifier();
 
