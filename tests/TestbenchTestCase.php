@@ -4,6 +4,7 @@ namespace Empuxa\PinLogin\Tests;
 
 use Empuxa\PinLogin\Models\User;
 use Empuxa\PinLogin\PinLoginServiceProvider;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class TestbenchTestCase extends \Orchestra\Testbench\TestCase
@@ -38,7 +39,7 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
     /**
      * @param array<int|string,mixed> $params
      */
-    protected function createUser(array $params = [])
+    protected function createUser(array $params = []): Model
     {
         return config('pin-login.model')::create(array_merge(
             // Default Laravel params
