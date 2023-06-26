@@ -31,7 +31,7 @@ class HandlePinRequest extends Controller
             session(config('pin-login.columns.identifier')),
         );
 
-        Auth::login($this->user, $request->input('remember') ?? false);
+        Auth::login($this->user, $request->input('remember') === 'true' ?? false);
 
         ResetLoginPin::dispatch($this->user);
 
