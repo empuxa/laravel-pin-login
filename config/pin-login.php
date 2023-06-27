@@ -110,8 +110,8 @@ return [
 
     /**
      * Enable the "superpin" feature.
-     * When enabled, the user can sign in with a PIN of your choice on non-production environments.
-     * To enable, set the environment variable `PIN_LOGIN_SUPERPIN` to the integer PIN you want to use.
+     * When enabled, any user can also sign in with the PIN of your choice on non-production environments.
+     * Set the environment variable `PIN_LOGIN_SUPERPIN` to the integer PIN you want to use.
      * Default: false
      */
     'superpin' => env('PIN_LOGIN_SUPERPIN', false),
