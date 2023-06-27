@@ -2,12 +2,10 @@
 
 namespace Empuxa\PinLogin\Tests\Feature\Controllers;
 
-use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
 use Empuxa\PinLogin\Notifications\LoginPin;
 use Empuxa\PinLogin\Tests\TestbenchTestCase;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
@@ -27,7 +25,6 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
         ]);
 
         $response->assertSessionHasNoErrors();
-
 
         $response->assertRedirect(route('pin-login.pin.form'));
 

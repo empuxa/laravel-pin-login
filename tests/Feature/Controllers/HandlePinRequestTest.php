@@ -21,7 +21,7 @@ class HandlePinRequestTest extends TestbenchTestCase
 
         $response = $this
             ->withSession([
-                config('pin-login.columns.identifier') => $user->{config('pin-login.columns.identifier')},
+                config('pin-login.columns.identifier')      => $user->{config('pin-login.columns.identifier')},
                 config('pin-login.columns.pin_valid_until') => now()->addMinutes(10),
             ])
             ->post(route('pin-login.pin.handle'), [
