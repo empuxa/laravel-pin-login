@@ -3,12 +3,14 @@
 namespace Empuxa\PinLogin\Tests\Feature\Controllers;
 
 use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
+use Empuxa\PinLogin\Notifications\LoginPin;
 use Empuxa\PinLogin\Tests\TestbenchTestCase;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 
 class HandleIdentifierRequestTest extends TestbenchTestCase
 {
@@ -16,7 +18,7 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
 
     public function test_sends_email_to_user(): void
     {
-        Bus::fake();
+        Notification::fake();
 
         $user = $this->createUser();
 
@@ -26,16 +28,17 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
 
         $response->assertSessionHasNoErrors();
 
-        Bus::assertDispatched(CreateAndSendLoginPin::class);
 
         $response->assertRedirect(route('pin-login.pin.form'));
 
         $this->assertGuest();
+
+        Notification::assertSentTo($user, LoginPin::class);
     }
 
     public function test_does_not_send_email_to_user_with_wrong_email(): void
     {
-        Bus::fake();
+        Notification::fake();
 
         $response = $this->post(route('pin-login.identifier.handle'), [
             config('pin-login.columns.identifier') => 'not_existing@example.com',
@@ -43,9 +46,9 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
 
         $response->assertSessionHasErrors('email', __('auth.failed'));
 
-        Bus::assertNotDispatched(CreateAndSendLoginPin::class);
-
         $this->assertGuest();
+
+        Notification::assertNothingSent();
     }
 
     public function test_does_not_send_email_to_user_with_rate_limit(): void
@@ -53,6 +56,7 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
         Config::set('pin-login.identifier.enable_throttling', true);
 
         Event::fake();
+        Notification::fake();
 
         for ($i = 0; $i < config('pin-login.identifier.max_attempts'); $i++) {
             $this->post(route('pin-login.identifier.handle'), [
@@ -63,13 +67,15 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
         Event::assertDispatched(Lockout::class);
 
         $this->assertGuest();
+
+        Notification::assertNothingSent();
     }
 
     public function test_sends_email_to_user_through_disabled_rate_limit(): void
     {
         Config::set('pin-login.identifier.enable_throttling', false);
 
-        Bus::fake();
+        Notification::fake();
 
         $user = $this->createUser();
 
@@ -85,10 +91,10 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
 
         $response->assertSessionHasNoErrors();
 
-        Bus::assertDispatched(CreateAndSendLoginPin::class);
-
         $response->assertRedirect(route('pin-login.pin.form'));
 
         $this->assertGuest();
+
+        Notification::assertSentTo($user, LoginPin::class);
     }
 }

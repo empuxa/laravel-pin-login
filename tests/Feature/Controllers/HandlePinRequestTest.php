@@ -2,6 +2,7 @@
 
 namespace Empuxa\PinLogin\Tests\Feature\Controllers;
 
+use Empuxa\PinLogin\Notifications\LoginPin;
 use Empuxa\PinLogin\Tests\TestbenchTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
@@ -14,11 +15,14 @@ class HandlePinRequestTest extends TestbenchTestCase
 
     public function test_cannot_login_with_wrong_pin(): void
     {
+        Notification::fake();
+
         $user = $this->createUser();
 
         $response = $this
             ->withSession([
                 config('pin-login.columns.identifier') => $user->{config('pin-login.columns.identifier')},
+                config('pin-login.columns.pin_valid_until') => now()->addMinutes(10),
             ])
             ->post(route('pin-login.pin.handle'), [
                 'pin' => [9, 9, 9, 9, 9, 9],
@@ -31,6 +35,8 @@ class HandlePinRequestTest extends TestbenchTestCase
         ]));
 
         $this->assertGuest();
+
+        Notification::assertNothingSent();
     }
 
     public function test_cannot_login_with_expired_session(): void
@@ -54,10 +60,14 @@ class HandlePinRequestTest extends TestbenchTestCase
         $response->assertSessionHasErrors('pin', __('controllers/session.store.error.expired'));
 
         $this->assertGuest();
+
+        Notification::assertSentTo($user, LoginPin::class);
     }
 
     public function test_cannot_login_with_rate_limit(): void
     {
+        Notification::fake();
+
         Config::set('pin-login.pin.enable_throttling', true);
 
         $user = $this->createUser([
@@ -89,10 +99,14 @@ class HandlePinRequestTest extends TestbenchTestCase
         ]));
 
         $this->assertGuest();
+
+        Notification::assertNothingSent();
     }
 
     public function test_can_login_with_correct_pin(): void
     {
+        Notification::fake();
+
         $user = $this->createUser([
             config('pin-login.columns.pin_valid_until') => now()->addMinutes(10),
         ]);
@@ -112,10 +126,14 @@ class HandlePinRequestTest extends TestbenchTestCase
         $response->assertRedirect(config('pin-login.redirect'));
 
         $this->assertAuthenticatedAs($user);
+
+        Notification::assertNothingSent();
     }
 
     public function test_can_login_through_disabled_rate_limit(): void
     {
+        Notification::fake();
+
         Config::set('pin-login.pin.enable_throttling', false);
 
         $user = $this->createUser([
@@ -147,10 +165,14 @@ class HandlePinRequestTest extends TestbenchTestCase
         $response->assertRedirect(config('pin-login.redirect'));
 
         $this->assertAuthenticatedAs($user);
+
+        Notification::assertNothingSent();
     }
 
     public function test_can_login_with_superpin(): void
     {
+        Notification::fake();
+
         Config::set('pin-login.superpin', 333333);
 
         $user = $this->createUser([
@@ -172,5 +194,7 @@ class HandlePinRequestTest extends TestbenchTestCase
         $response->assertRedirect(config('pin-login.redirect'));
 
         $this->assertAuthenticatedAs($user);
+
+        Notification::assertNothingSent();
     }
 }
