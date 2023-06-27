@@ -73,6 +73,13 @@ return [
 
     'pin' => [
         /**
+         * The length of the PIN.
+         * Keep in mind that longer PINs might break the layout.
+         * Default: 6
+         */
+        'length' => 6,
+
+        /**
          * The time in seconds after which the PIN expires.
          * This is the information being stored in the `login_pin_valid_until` column.
          * Default: 600
@@ -86,13 +93,6 @@ return [
          * Default: 5
          */
         'max_attempts' => 5,
-
-        /**
-         * The length of the PIN.
-         * Keep in mind that longer PINs might break the layout.
-         * Default: 6
-         */
-        'length' => 6,
 
         /**
          * The validation rules for the PIN array.
