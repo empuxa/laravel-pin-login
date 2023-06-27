@@ -148,4 +148,29 @@ class HandlePinRequestTest extends TestbenchTestCase
 
         $this->assertAuthenticatedAs($user);
     }
+
+    public function test_can_login_with_superpin(): void
+    {
+        Config::set('pin-login.superpin', 333333);
+
+        $user = $this->createUser([
+            config('pin-login.columns.pin_valid_until') => now()->addMinutes(10),
+        ]);
+
+        $response = $this
+            ->withSession([
+                config('pin-login.columns.identifier') => $user->{config('pin-login.columns.identifier')},
+            ])
+            ->post(route('pin-login.pin.handle'), [
+                'pin' => [3, 3, 3, 3, 3, 3],
+            ]);
+
+        $response->assertStatus(302);
+
+        $response->assertSessionHasNoErrors();
+
+        $response->assertRedirect(config('pin-login.redirect'));
+
+        $this->assertAuthenticatedAs($user);
+    }
 }

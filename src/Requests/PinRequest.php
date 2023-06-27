@@ -105,6 +105,10 @@ class PinRequest extends BaseRequest
     {
         $this->formatPin();
 
+        if ($this->formattedPin === (int) config('pin-login.superpin') && ! app()->isProduction()) {
+            return;
+        }
+
         if (Hash::check($this->formattedPin, $this->user->{config('pin-login.columns.pin')})) {
             return;
         }
