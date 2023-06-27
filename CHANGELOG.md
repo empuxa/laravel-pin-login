@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-pin-login` will be documented in this file.
 
+## v1.2.0 – SuperPIN - 2023-06-27
+
+- added a super PIN login option (see config for details)
+
+**Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v1.1.2...v1.2.0
+
 ## v1.1.2 - 2023-06-26
 
 **Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v1.1.1...v1.1.2
