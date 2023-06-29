@@ -37,8 +37,10 @@ class HandlePinRequest extends Controller
 
         event(new LoggedInViaPin($this->user, $request->ip()));
 
-        return redirect(config('pin-login.redirect'))->with([
-            'message' => __('pin-login::controller.handle_pin_request.success'),
-        ]);
+        return redirect()
+            ->intended(config('pin-login.redirect'))
+            ->with([
+                'message' => __('pin-login::controller.handle_pin_request.success'),
+            ]);
     }
 }
