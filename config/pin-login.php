@@ -59,9 +59,9 @@ return [
 
         /**
          * The validation rules for the email.
-         * Default: 'email|required'
+         * Default: 'required|string|email'
          */
-        'validation' => 'required|email',
+        'validation' => 'required|string|email',
 
         /**
          * Enable throttling for the identifier request.
