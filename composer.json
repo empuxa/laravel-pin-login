@@ -26,6 +26,7 @@
         "spatie/laravel-package-tools": "^1.0"
     },
     "require-dev": {
+        "laravel/pint": "^1.10",
         "orchestra/testbench": "^7.25|^8.0",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5"
@@ -41,6 +42,7 @@
         }
     },
     "scripts": {
+        "pint": "./vendor/bin/pint",
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage"
     },
