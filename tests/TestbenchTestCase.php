@@ -37,7 +37,7 @@ class TestbenchTestCase extends \Orchestra\Testbench\TestCase
     }
 
     /**
-     * @param  array<int|string,mixed>  $params
+     * @param array<int|string,mixed> $params
      */
     protected function createUser(array $params = []): Model
     {
