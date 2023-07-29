@@ -12,7 +12,7 @@ class BaseRequest extends FormRequest
         return auth()->guest();
     }
 
-    public function getUserModel(string $identifier = null): ?Model
+    public function getUserModel(?string $identifier = null): ?Model
     {
         $query = config('pin-login.model')::query();
 

@@ -14,7 +14,8 @@
         },
         "concat_space": {
             "spacing": "one"
-        }
+        },
+        "nullable_type_declaration_for_default_null_value": true
     },
     "notPath": [
         "config/",
