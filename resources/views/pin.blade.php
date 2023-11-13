@@ -27,7 +27,7 @@
         <form action="{{ route('pin-login.pin.handle') }}" method="POST">
             @csrf
 
-            <div class="space-y-6">
+            <div class="space-y-6" role="region" aria-label="Enter PIN">
                 @error ('pin')
                     <div class="rounded-md bg-red-50 dark:bg-red-400 p-4 text-sm">
                         <div class="flex items-center">
@@ -51,8 +51,9 @@
                 {{-- PIN inputs --}}
                 <div class="flex justify-center" x-data="pin()">
                     <template x-for="(l,i) in pin_length" :key="`pin_field_${i}`">
-                        <input :autofocus="i === 0"
-                               :id="`pin_field_${i}`"
+                        <input :id="`pin_field_${i}`"
+                               :autofocus="i === 0"
+                               :aria-label="`PIN Element ${i + 1}`"
                                class="h-16 lg:h-20 w-12 lg:w-16 border border-gray-300 dark:border-gray-600 mx-1 rounded-md flex items-center text-center text-3xl lg:text-4xl text-gray-900 bg-transparent dark:text-gray-200 uppercase focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                value=""
                                name="pin[]"
@@ -61,7 +62,9 @@
                                @keyup="stepForward(i)"
                                @keydown.backspace="stepBack(i)"
                                @focus="resetValue(i)"
-                               autofocus>
+                               autofocus
+                               required
+                        >
                     </template>
                 </div>
 
@@ -69,26 +72,29 @@
                 <div class="flex items-center justify-center">
                     <div class="flex items-center" x-data="{ remember: true }">
                         <button type="button"
-                                @click="remember = !remember"
+                                role="switch"
                                 aria-labelledby="remember"
-                                :aria-pressed="remember.toString()"
+                                :aria-checked="remember.toString()"
                                 :value="remember.toString()"
                                 :class="{ 'bg-gray-200 dark:bg-gray-700': !remember, 'bg-green-500': remember }"
-                                class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200">
-                                <span class="sr-only">
-                                    {{ __('views/auth.pin.remember', ['days' => 30]) }}
-                                </span>
+                                class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200"
+                                @click="remember = !remember"
+                        >
+                            <span class="sr-only">
+                                {{ __('views/auth.pin.remember', ['days' => 30]) }}
+                            </span>
                             <span aria-hidden="true"
                                   :class="{ 'translate-x-0': !remember, 'translate-x-5': remember }"
                                   class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 translate-x-0">
-                                </span>
+                            </span>
                         </button>
+
                         <span class="ml-5 flex-grow flex flex-col" id="remember"
                               @click="remember = !remember; $refs.switch.focus()">
-                                <span class="font-medium text-default">
-                                    Info text regarding remember me…
-                                </span>
+                            <span class="font-medium text-default">
+                                Info text regarding remember me…
                             </span>
+                        </span>
                         <input type="hidden" value="false" name="remember" :value="remember"/>
                     </div>
                 </div>

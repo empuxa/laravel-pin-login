@@ -46,26 +46,28 @@
                     </p>
                 </div>
 
-                <div>
-                    <label for="{{ config('pin-login.columns.identifier') }}" class="block font-semibold text-gray-700 dark:text-gray-200">
-                        Email address
-                    </label>
-                    <div class="mt-1 flex rounded-md shadow-sm w-full">
-                        <input id="{{ config('pin-login.columns.identifier') }}"
-                               name="{{ config('pin-login.columns.identifier') }}"
-                               type="text"
-                               value=""
-                               class="py-2 px-5 block border-gray-300 dark:border-gray-600 border appearance-none focus-primary w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 disabled:cursor-not-allowed rounded-md"
-                               aria-required="true"
-                               autocomplete="{{ config('pin-login.columns.identifier') }}"
-                        >
+                <div class="space-y-6" role="region" aria-label="Request PIN">
+                    <div>
+                        <label for="{{ config('pin-login.columns.identifier') }}" class="block font-semibold text-gray-700 dark:text-gray-200">
+                            Email address
+                        </label>
+                        <div class="mt-1 flex rounded-md shadow-sm w-full">
+                            <input id="{{ config('pin-login.columns.identifier') }}"
+                                   name="{{ config('pin-login.columns.identifier') }}"
+                                   type="text"
+                                   value=""
+                                   class="py-2 px-5 block border-gray-300 dark:border-gray-600 border appearance-none focus-primary w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 disabled:cursor-not-allowed rounded-md"
+                                   aria-required="true"
+                                   autocomplete="{{ config('pin-login.columns.identifier') }}"
+                            >
+                        </div>
                     </div>
-                </div>
 
-                <div>
-                    <button type="submit" class="w-full flex inline-flex items-center justify-center px-2.5 md:px-5 py-2.5 font-semibold rounded-md text-white bg-green-500 hover:bg-green-400 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus:outline-2 focus:outline-offset-2 h-12">
-                        Send me the PIN
-                    </button>
+                    <div>
+                        <button type="submit" class="w-full flex inline-flex items-center justify-center px-2.5 md:px-5 py-2.5 font-semibold rounded-md text-white bg-green-500 hover:bg-green-400 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus:outline-2 focus:outline-offset-2 h-12">
+                            Send me the PIN
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>
