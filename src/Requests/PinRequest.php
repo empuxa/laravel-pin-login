@@ -45,6 +45,10 @@ class PinRequest extends BaseRequest
 
         $this->user = $this->getUserModel(session(config('pin-login.columns.identifier')));
 
+        if (is_null($this->user)) {
+            return;
+        }
+
         $this->ensureIsNotRateLimited();
         $this->ensurePinIsNotExpired();
         $this->validatePin();
