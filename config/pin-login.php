@@ -37,7 +37,7 @@ return [
     'route' => [
         /**
          * The middleware to use for the route.
-         * Default: ['web', 'guest]
+         * Default: ['web', 'guest']
          */
         'middleware' => ['web', 'guest'],
 
