@@ -2,6 +2,16 @@
 
 All notable changes to `laravel-pin-login` will be documented in this file.
 
+## v1.3.0 - 2023-11-13
+
+### What's Changed
+
+- Bump aglipanci/laravel-pint-action from 2.2.0 to 2.3.0 by @dependabot in https://github.com/empuxa/laravel-pin-login/pull/7
+- Bump stefanzweifel/git-auto-commit-action from 4 to 5 by @dependabot in https://github.com/empuxa/laravel-pin-login/pull/5
+- Bump actions/checkout from 3 to 4 by @dependabot in https://github.com/empuxa/laravel-pin-login/pull/6
+
+**Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v1.2.1...v1.3.0
+
 ## v1.2.1 - 2023-10-03
 
 ### What's Changed
