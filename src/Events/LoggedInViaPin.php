@@ -12,7 +12,7 @@ class LoggedInViaPin
     use InteractsWithSockets;
     use SerializesModels;
 
-    public function __construct(public $user, public readonly string $ip)
+    public function __construct(public $user, public $request)
     {
     }
 }
