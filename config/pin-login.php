@@ -1,9 +1,5 @@
 <?php
 
-use Empuxa\PinLogin\Events\LoggedInViaPin;
-use Empuxa\PinLogin\Events\LoginRequestViaPin;
-use Illuminate\Auth\Events\Lockout;
-
 return [
     /**
      * The model to use for the login.
@@ -131,18 +127,18 @@ return [
          * This event is fired when a user submits a PIN.
          * Default: \Empuxa\PinLogin\Events\PinRequested::class
          */
-        'login_request_via_pin' => LoginRequestViaPin::class,
+        'login_request_via_pin' => \Empuxa\PinLogin\Events\LoginRequestViaPin::class,
 
         /**
          * This event is fired when a user was successfully logged in.
          * Default: \Empuxa\PinLogin\Events\LoggedInViaPin::class
          */
-        'logged_in_via_pin'     => LoggedInViaPin::class,
+        'logged_in_via_pin'     => \Empuxa\PinLogin\Events\LoggedInViaPin::class,
 
         /**
          * This event is fired when a user was successfully logged in.
          * Default: \Illuminate\Auth\Events\Lockout::class
          */
-        'lockout'               => Lockout::class,
+        'lockout'               => \Illuminate\Auth\Events\Lockout::class,
     ],
 ];
