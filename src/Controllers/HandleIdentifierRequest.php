@@ -2,7 +2,6 @@
 
 namespace Empuxa\PinLogin\Controllers;
 
-use Empuxa\PinLogin\Events\LoginRequestViaPin;
 use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
 use Empuxa\PinLogin\Requests\IdentifierRequest;
 use Illuminate\Http\RedirectResponse;
@@ -27,7 +26,8 @@ class HandleIdentifierRequest extends Controller
             config('pin-login.columns.identifier') => $identifierData,
         ]);
 
-        event(new LoginRequestViaPin($user, $request->ip()));
+        $event = config('pin-login.events.login_request_via_pin');
+        event(new $event($user, $request));
 
         return redirect(route('pin-login.pin.form'));
     }

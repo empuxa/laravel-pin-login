@@ -2,7 +2,6 @@
 
 namespace Empuxa\PinLogin\Requests;
 
-use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -45,7 +44,8 @@ class IdentifierRequest extends BaseRequest
             return;
         }
 
-        event(new Lockout($this));
+        $event = config('pin-login.events.lockout');
+        event(new $event($this));
 
         $seconds = RateLimiter::availableIn($this->throttleKey());
 

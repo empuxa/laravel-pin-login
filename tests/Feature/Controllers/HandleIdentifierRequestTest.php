@@ -4,7 +4,6 @@ namespace Empuxa\PinLogin\Tests\Feature\Controllers;
 
 use Empuxa\PinLogin\Notifications\LoginPin;
 use Empuxa\PinLogin\Tests\TestbenchTestCase;
-use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
@@ -61,7 +60,8 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
             ]);
         }
 
-        Event::assertDispatched(Lockout::class);
+        $event = config('pin-login.events.lockout');
+        Event::assertDispatched($event);
 
         $this->assertGuest();
 
