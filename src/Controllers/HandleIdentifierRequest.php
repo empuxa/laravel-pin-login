@@ -2,7 +2,6 @@
 
 namespace Empuxa\PinLogin\Controllers;
 
-use Empuxa\PinLogin\Events\LoginRequestViaPin;
 use Empuxa\PinLogin\Jobs\CreateAndSendLoginPin;
 use Empuxa\PinLogin\Requests\IdentifierRequest;
 use Illuminate\Http\RedirectResponse;

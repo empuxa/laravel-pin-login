@@ -4,7 +4,6 @@ namespace Empuxa\PinLogin\Tests\Feature\Controllers;
 
 use Empuxa\PinLogin\Notifications\LoginPin;
 use Empuxa\PinLogin\Tests\TestbenchTestCase;
-use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
