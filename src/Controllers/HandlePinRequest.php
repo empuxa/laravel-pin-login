@@ -2,7 +2,6 @@
 
 namespace Empuxa\PinLogin\Controllers;
 
-use Empuxa\PinLogin\Events\LoggedInViaPin;
 use Empuxa\PinLogin\Jobs\ResetLoginPin;
 use Empuxa\PinLogin\Requests\PinRequest;
 use Illuminate\Http\RedirectResponse;
@@ -35,7 +34,8 @@ class HandlePinRequest extends Controller
 
         ResetLoginPin::dispatch($this->user);
 
-        event(new LoggedInViaPin($this->user, $request->ip()));
+        $event = config('pin-login.events.logged_in_via_pin');
+        event(new $event($this->user, $request));
 
         return redirect()
             ->intended(config('pin-login.redirect'))

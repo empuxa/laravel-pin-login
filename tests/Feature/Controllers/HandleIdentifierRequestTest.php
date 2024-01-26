@@ -61,7 +61,8 @@ class HandleIdentifierRequestTest extends TestbenchTestCase
             ]);
         }
 
-        Event::assertDispatched(Lockout::class);
+        $event = config('pin-login.events.lockout');
+        Event::assertDispatched($event);
 
         $this->assertGuest();
 

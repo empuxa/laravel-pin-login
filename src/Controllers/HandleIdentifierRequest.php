@@ -27,7 +27,8 @@ class HandleIdentifierRequest extends Controller
             config('pin-login.columns.identifier') => $identifierData,
         ]);
 
-        event(new LoginRequestViaPin($user, $request->ip()));
+        $event = config('pin-login.events.login_request_via_pin');
+        event(new $event($user, $request));
 
         return redirect(route('pin-login.pin.form'));
     }

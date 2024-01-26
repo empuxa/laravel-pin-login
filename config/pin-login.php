@@ -1,11 +1,15 @@
 <?php
 
+use Empuxa\PinLogin\Events\LoggedInViaPin;
+use Empuxa\PinLogin\Events\LoginRequestViaPin;
+use Illuminate\Auth\Events\Lockout;
+
 return [
     /**
      * The model to use for the login.
      * Default: \App\Models\User::class
      */
-    'model' => \App\Models\User::class,
+    'model'        => \App\Models\User::class,
 
     /**
      * The notification to send to the user.
@@ -13,19 +17,19 @@ return [
      */
     'notification' => \Empuxa\PinLogin\Notifications\LoginPin::class,
 
-    'columns' => [
+    'columns'      => [
         /**
          * The main identifier of the user model.
          * We will use this column to authenticate the user and to send the PIN to.
          * Default: 'email'
          */
-        'identifier' => 'email',
+        'identifier'      => 'email',
 
         /**
          * The column where the PIN is stored.
          * Default: 'login_pin'
          */
-        'pin' => 'login_pin',
+        'pin'             => 'login_pin',
 
         /**
          * The column where we store the information, how long the PIN is valid.
@@ -34,7 +38,7 @@ return [
         'pin_valid_until' => 'login_pin_valid_until',
     ],
 
-    'route' => [
+    'route'        => [
         /**
          * The middleware to use for the route.
          * Default: ['web', 'guest']
@@ -45,23 +49,23 @@ return [
          * The prefix for the route.
          * Default: 'login'
          */
-        'prefix' => 'login',
+        'prefix'     => 'login',
     ],
 
-    'identifier' => [
+    'identifier'   => [
         /**
          * The maximum number of attempts to get the user per minute.
          * Afterward, the user gets blocked for 60 seconds.
          * See the default Laravel RateLimiter for more information.
          * Default: 5
          */
-        'max_attempts' => 5,
+        'max_attempts'      => 5,
 
         /**
          * The validation rules for the email.
          * Default: 'required|string|email'
          */
-        'validation' => 'required|string|email',
+        'validation'        => 'required|string|email',
 
         /**
          * Enable throttling for the identifier request.
@@ -71,20 +75,20 @@ return [
         'enable_throttling' => true,
     ],
 
-    'pin' => [
+    'pin'          => [
         /**
          * The length of the PIN.
          * Keep in mind that longer PINs might break the layout.
          * Default: 6
          */
-        'length' => 6,
+        'length'            => 6,
 
         /**
          * The time in seconds after which the PIN expires.
          * This is the information being stored in the `login_pin_valid_until` column.
          * Default: 600
          */
-        'expires_in' => 600,
+        'expires_in'        => 600,
 
         /**
          * The maximum number of attempts to enter a PIN per minute.
@@ -92,13 +96,13 @@ return [
          * See the default Laravel RateLimiter for more information.
          * Default: 5
          */
-        'max_attempts' => 5,
+        'max_attempts'      => 5,
 
         /**
          * The validation rules for the PIN array.
          * Default: 'required|array|size:6'
          */
-        'validation' => 'required|array|size:6',
+        'validation'        => 'required|array|size:6',
 
         /**
          * Enable throttling for the PIN request.
@@ -112,13 +116,33 @@ return [
      * Enable the "superpin" feature.
      * When enabled, any user can also sign in with the PIN of your choice on non-production environments.
      * Set the environment variable `PIN_LOGIN_SUPERPIN` to the integer PIN you want to use.
-     * Default: false
+     * Default: env('PIN_LOGIN_SUPERPIN', false)
      */
-    'superpin' => env('PIN_LOGIN_SUPERPIN', false),
+    'superpin'     => env('PIN_LOGIN_SUPERPIN', false),
 
     /**
      * The redirect path after a successful login.
      * Default: '/'
      */
-    'redirect' => '/',
+    'redirect'     => '/',
+
+    'events'       => [
+        /**
+         * This event is fired when a user submits a PIN.
+         * Default: \Empuxa\PinLogin\Events\PinRequested::class
+         */
+        'login_request_via_pin' => LoginRequestViaPin::class,
+
+        /**
+         * This event is fired when a user was successfully logged in.
+         * Default: \Empuxa\PinLogin\Events\LoggedInViaPin::class
+         */
+        'logged_in_via_pin'     => LoggedInViaPin::class,
+
+        /**
+         * This event is fired when a user was successfully logged in.
+         * Default: \Illuminate\Auth\Events\Lockout::class
+         */
+        'lockout'               => Lockout::class,
+    ],
 ];
