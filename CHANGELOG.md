@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-pin-login` will be documented in this file.
 
+## v3.0.0 - 2024-03-15
+
+### What's Changed
+
+* Feat: Added support for Laravel 11 by @marcoraddatz in https://github.com/empuxa/laravel-pin-login/pull/11
+
+**Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v2.0.2...v3.0.0
+
 ## v2.0.2 - 2024-03-15
 
 **Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v2.0.1...v2.0.2
