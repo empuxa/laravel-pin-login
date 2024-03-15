@@ -2,6 +2,24 @@
 
 All notable changes to `laravel-pin-login` will be documented in this file.
 
+## v2.0.2 - 2024-03-15
+
+**Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v2.0.1...v2.0.2
+
+## v2.0.1 - 2024-03-15
+
+**Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v2.0.0...v2.0.1
+
+## v2.0.0 - 2024-03-15
+
+### What's Changed
+
+* Bump aglipanci/laravel-pint-action from 2.3.0 to 2.3.1 by @dependabot in https://github.com/empuxa/laravel-pin-login/pull/8
+* Bump actions/dependency-review-action from 3 to 4 by @dependabot in https://github.com/empuxa/laravel-pin-login/pull/9
+* Feat: Added events to config (breaking change) by @marcoraddatz in https://github.com/empuxa/laravel-pin-login/pull/10
+
+**Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v1.3.0...v2.0.0
+
 ## v1.3.0 - 2023-11-13
 
 ### What's Changed
