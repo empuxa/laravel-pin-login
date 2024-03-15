@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-pin-login` will be documented in this file.
 
+## v2.0.2 - 2024-03-15
+
+**Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v2.0.1...v2.0.2
+
 ## v2.0.1 - 2024-03-15
 
 **Full Changelog**: https://github.com/empuxa/laravel-pin-login/compare/v2.0.0...v2.0.1
